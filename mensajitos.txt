@@ -1,0 +1,11 @@
+        <<--- PASOS QUE NOS QUEDAN --->>
+
+falta la funcion de ajuste
+
+modularizar logica_juego
+
+agregar tiempo para responder
+
+agregar los bosses
+
+agregar los multiplicadores para las dificultades facil(0.96) pro(1.50) experto(2)

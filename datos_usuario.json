@@ -1,0 +1,42 @@
+{
+    "tobi": {
+        "contrasena": "1",
+        "estadisticas": {
+            "total_puntos": 37,
+            "ultimo_puntaje": 13,
+            "partidas_jugadas": 7
+        }
+    },
+    "p": {
+        "contrasena": "2",
+        "estadisticas": {
+            "total_puntos": 0,
+            "ultimo_puntaje": 0,
+            "partidas_jugadas": 0
+        }
+    },
+    "12": {
+        "contrasena": "12",
+        "estadisticas": {
+            "total_puntos": 0,
+            "ultimo_puntaje": 0,
+            "partidas_jugadas": 0
+        }
+    },
+    "1": {
+        "contrasena": "1",
+        "estadisticas": {
+            "total_puntos": 0,
+            "ultimo_puntaje": 0,
+            "partidas_jugadas": 0
+        }
+    },
+    "r": {
+        "contrasena": "12",
+        "estadisticas": {
+            "total_puntos": 0,
+            "ultimo_puntaje": 0,
+            "partidas_jugadas": 0
+        }
+    }
+}
