@@ -1,0 +1,9 @@
+{
+  "cantidad_preguntas": 10,
+  "tiempo_por_pregunta": 30,
+  "accesibilidad": {
+    "por_defecto": "neurotipico",
+    "opciones": ["neurotipico", "neurodivergente"]
+  }
+}
+ 

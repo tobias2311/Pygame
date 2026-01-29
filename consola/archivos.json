@@ -1,0 +1,80 @@
+{
+    "usuario1": {
+        "nombre": "giuli",
+        "contra": "giulo10waw",
+        "ultimo_puntaje": 5.75,
+        "total_respuestas_correctas": 122,
+        "total_puntaje_acumulado": 251.375,
+        "total_de_veces_jugadas": 17,
+        "total_aciertos": 122,
+        "total_errores": 126,
+        "puntaje_max": 107.0,
+        "porcentaje_winrate": 59.8,
+        "rango": "Oro\ud83e\udd47"
+    },
+    "usuario2": {
+        "nombre": "tobi",
+        "contra": "123",
+        "ultimo_puntaje": 107.52,
+        "total_respuestas_correctas": 204,
+        "total_puntaje_acumulado": 1095.034375,
+        "total_de_veces_jugadas": 20,
+        "total_aciertos": 204,
+        "total_errores": 46,
+        "puntaje_max": 140.0,
+        "porcentaje_winrate": 85.0,
+        "rango": "Leyenda\ud83d\udc8e"
+    },
+    "usuario3": {
+        "nombre": "gonza",
+        "contra": "123",
+        "ultimo_puntaje": 5.75,
+        "total_respuestas_correctas": 6,
+        "total_puntaje_acumulado": 5.75,
+        "total_de_veces_jugadas": 1,
+        "total_aciertos": 6,
+        "total_errores": 6,
+        "puntaje_max": 5.75,
+        "porcentaje_winrate": 50.0,
+        "rango": "Unranked"
+    },
+    "usuario4": {
+        "nombre": "",
+        "contra": "",
+        "ultimo_puntaje": 0,
+        "total_respuestas_correctas": 0,
+        "total_puntaje_acumulado": 0,
+        "total_de_veces_jugadas": 0,
+        "total_aciertos": 0,
+        "total_errores": 0,
+        "puntaje_max": 0,
+        "porcentaje_winrate": 0.0,
+        "rango": "Unranked"
+    },
+    "usuario5": {
+        "nombre": "",
+        "contra": "",
+        "ultimo_puntaje": 0,
+        "total_respuestas_correctas": 0,
+        "total_puntaje_acumulado": 0,
+        "total_de_veces_jugadas": 0,
+        "total_aciertos": 0,
+        "total_errores": 0,
+        "puntaje_max": 0,
+        "porcentaje_winrate": 0.0,
+        "rango": "Unranked"
+    },
+    "usuario6": {
+        "nombre": "",
+        "contra": "",
+        "ultimo_puntaje": 0,
+        "total_respuestas_correctas": 0,
+        "total_puntaje_acumulado": 0,
+        "total_de_veces_jugadas": 0,
+        "total_aciertos": 0,
+        "total_errores": 0,
+        "puntaje_max": 0,
+        "porcentaje_winrate": 0.0,
+        "rango": "Unranked"
+    }
+}
