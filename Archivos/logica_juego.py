@@ -266,20 +266,20 @@ def mostrar_pantalla_guia(ventana, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENT
     """Muestra la guía del juego con párrafos que avanzan al presionar Enter"""
     
     parrafos = [
-        ("--- GUÍA DEL JUEGO: COMPLETA LA FRASE ---", (0, 255, 255), 70),
-        ("Este juego pone a prueba tu conocimiento con frases populares,\ncultura general y deportes.\nTu misión: completar correctamente la frase\no responder bien la pregunta.", (200, 100, 255), 48),
+        ("--- GUÍA DEL JUEGO: COMPLETA LA FRASE ---", (0, 255, 255), 60),
+        ("Este juego pone a prueba tu conocimiento con frases populares,\ncultura general y deportes.\nTu misión: completar correctamente la frase\no responder bien la pregunta.", (255, 255, 255), 40), # Cambiado a blanco
         
-        ("1️⃣ Inicio del juego:", (255, 165, 0), 60),
-        ("Al iniciar, elegís una temática y una dificultad.\nTemáticas: Frases populares, Cultura general, Deportes.\nDificultades: Fácil, Pro y Experto.", (200, 100, 255), 48),
+        ("1️⃣ Inicio del juego:", (255, 165, 0), 50),
+        ("Al iniciar, elegís una temática y una dificultad.\nTemáticas: Frases populares, Cultura general, Deportes.\nDificultades: Fácil, Pro y Experto.", (255, 255, 255), 40), # Cambiado a blanco
         
-        ("2️⃣ Desarrollo de la partida:", (255, 165, 0), 60),
-        ("Se te harán 12 preguntas según la temática y dificultad elegidas.\n\n- Fácil: 4 opciones.\n- Pro: 4 opciones.\n- Experto: sin opciones, escribís toda la frase.", (200, 100, 255), 48),
+        ("2️⃣ Desarrollo de la partida:", (255, 165, 0), 50),
+        ("Se te harán 12 preguntas según la temática y dificultad elegidas.\n\n- Fácil: 4 opciones.\n- Pro: 4 opciones.\n- Experto: sin opciones, escribís toda la frase.", (255, 255, 255), 40), # Cambiado a blanco
         
-        ("3️⃣ Cómo responder:", (255, 165, 0), 60),
-        ("- En modos Fácil/Pro, respondés con la letra (a, b, c o d).\n- En Experto, escribís la frase completa.\n- Si acertás, sumás puntos. Si fallás, se restaran puntos.\n   ✔ Fácil: +1 punto\n   ✔ Pro: +2 puntos\n   ✔ Experto: +5 puntos", (200, 100, 255), 48),
+        ("3️⃣ Cómo responder:", (255, 165, 0), 50),
+        ("- En modos Fácil/Pro, respondés con la letra (a, b, c o d).\n- En Experto, escribís la frase completa.\n- Si acertás, sumás puntos.\n   ✔ Fácil: +1 punto | Pro: +2 puntos | Experto: +5 puntos", (255, 255, 255), 40), # Cambiado a blanco
         
-        ("4️⃣ Resultados y final del juego:", (255, 165, 0), 60),
-        ("Al terminar las 12 preguntas, verás:\n\n- Tus aciertos y errores.\n- Tu puntaje final.\n- El promedio de tiempo que tardaste por pregunta.", (200, 100, 255), 48),
+        ("4️⃣ Resultados y final:", (255, 165, 0), 50),
+        ("Al terminar las 12 preguntas, verás:\n\n- Tus aciertos y errores.\n- Tu puntaje final guardado en tu perfil.", (255, 255, 255), 40), # Cambiado a blanco
         
         ("¡Listo! Ya sabés cómo se juega.", (0, 255, 255), 60),
     ]
@@ -301,31 +301,31 @@ def mostrar_pantalla_guia(ventana, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENT
         
         ventana.blit(menu_fondo_escalado, (0, 0))
         
-        fuente_titulo_guia = pygame.font.Font(None, 36)
+        fuente_titulo_guia = pygame.font.Font(None, 45)
         titulo = fuente_titulo_guia.render("GUÍA DEL JUEGO", True, (0, 255, 255))
-        ventana.blit(titulo, (ANCHO_VENTANA // 2 - titulo.get_width() // 2, 30))
+        ventana.blit(titulo, (ANCHO_VENTANA // 2 - titulo.get_width() // 2, 280))
         
         if indice_parrafo < len(parrafos):
             texto, color, tamaño = parrafos[indice_parrafo]
             fuente = pygame.font.Font(None, tamaño)
             
             lineas = texto.split('\n')
-            y_offset = 150
+            y_offset = 350
             
             for linea in lineas:
                 if linea.strip():
                     superficie_texto = fuente.render(linea, True, color)
                     x_centro = ANCHO_VENTANA // 2 - superficie_texto.get_width() // 2
                     ventana.blit(superficie_texto, (x_centro, y_offset))
-                y_offset += tamaño + 20
+                y_offset += tamaño + 15
         
-        fuente_info = pygame.font.Font(None, 40)
-        progreso = fuente_info.render(f"Presioná ENTER para continuar... ({indice_parrafo + 1}/{len(parrafos)})", True, (255, 165, 0))
-        ventana.blit(progreso, (ANCHO_VENTANA // 2 - progreso.get_width() // 2, ALTO_VENTANA - 50))
+        fuente_info = pygame.font.Font(None, 30)
+        progreso = fuente_info.render(f"ENTER para continuar... ({indice_parrafo + 1}/{len(parrafos)})", True, (255, 165, 0))
+        ventana.blit(progreso, (ANCHO_VENTANA // 2 - progreso.get_width() // 2, ALTO_VENTANA - 70))
         
-        fuente_escape = pygame.font.Font(None, 36)
+        fuente_escape = pygame.font.Font(None, 28)
         escape_texto = fuente_escape.render("ESC para volver al menú", True, (255, 165, 0))
-        ventana.blit(escape_texto, (ANCHO_VENTANA // 2 - escape_texto.get_width() // 2, ALTO_VENTANA - 20))
+        ventana.blit(escape_texto, (ANCHO_VENTANA // 2 - escape_texto.get_width() // 2, ALTO_VENTANA - 35))
         
         pygame.display.update()
         reloj.tick(60)
@@ -358,26 +358,30 @@ def mostrar_pantalla_estadisticas(ventana, nombre_jugador, ruta_json_usuarios, m
                 if evento.key == pygame.K_ESCAPE or evento.key == pygame.K_RETURN:
                     return "menu"
         
+        # Dibujamos el fondo
         ventana.blit(menu_fondo_escalado, (0, 0))
         
+        # Título de la pantalla (Bajado un poco para no pisar el logo del fondo)
         fuente_titulo = pygame.font.Font(None, 70)
         titulo = fuente_titulo.render("ESTADÍSTICAS", True, (0, 255, 255))
-        ventana.blit(titulo, (ANCHO_VENTANA // 2 - titulo.get_width() // 2, 40))
+        ventana.blit(titulo, (ANCHO_VENTANA // 2 - titulo.get_width() // 2, 280))
         
         fuente_info_normal = pygame.font.Font(None, 50)
         
+        # Bajamos todos los textos de puntaje (coordenadas Y aumentadas)
         total_texto = fuente_info_normal.render(f"Puntos Totales: {total_puntos}", True, (255, 255, 0))
-        ventana.blit(total_texto, (ANCHO_VENTANA // 2 - total_texto.get_width() // 2, 220))
+        ventana.blit(total_texto, (ANCHO_VENTANA // 2 - total_texto.get_width() // 2, 380))
         
         ultimo_texto = fuente_info_normal.render(f"Último Puntaje: {ultimo_puntaje}", True, (255, 165, 0))
-        ventana.blit(ultimo_texto, (ANCHO_VENTANA // 2 - ultimo_texto.get_width() // 2, 330))
+        ventana.blit(ultimo_texto, (ANCHO_VENTANA // 2 - ultimo_texto.get_width() // 2, 460))
         
         partidas_texto = fuente_info_normal.render(f"Partidas Jugadas: {partidas_jugadas}", True, (200, 100, 255))
-        ventana.blit(partidas_texto, (ANCHO_VENTANA // 2 - partidas_texto.get_width() // 2, 440))
+        ventana.blit(partidas_texto, (ANCHO_VENTANA // 2 - partidas_texto.get_width() // 2, 540))
         
+        # Instrucciones al pie
         fuente_instrucciones = pygame.font.Font(None, 32)
         instrucciones = fuente_instrucciones.render("Presioná ENTER o ESC para volver al menú", True, (255, 165, 0))
-        ventana.blit(instrucciones, (ANCHO_VENTANA // 2 - instrucciones.get_width() // 2, ALTO_VENTANA - 80))
+        ventana.blit(instrucciones, (ANCHO_VENTANA // 2 - instrucciones.get_width() // 2, ALTO_VENTANA - 60))
         
         pygame.display.update()
         reloj.tick(60)

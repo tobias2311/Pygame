@@ -36,18 +36,21 @@ def bajar_volumen():
     return volumen_actual
 
 def iniciar_musica():
-    """Inicia la música de fondo en loop"""
+    """Inicia la música de fondo del menú en loop"""
     try:
-        # Obtener la ruta al archivo de música
-        ruta_musica = os.path.join(os.path.dirname(os.path.dirname(__file__)), "sounds", "Música de juegos de retro game (música sin copyright).mp3")
-        
+        ruta_musica = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "sounds",
+            "musica_menu.mp3"
+        )
+
         if os.path.exists(ruta_musica):
-            # Cargar y reproducir la música
             pygame.mixer.music.load(ruta_musica)
             pygame.mixer.music.set_volume(volumen_actual)
-            pygame.mixer.music.play(-1)  # -1 significa reproducir en loop infinito
+            pygame.mixer.music.play(-1)  # loop infinito
         else:
             print(f"Archivo de música no encontrado: {ruta_musica}")
+
     except Exception as e:
         print(f"Error al cargar la música: {e}")
 
@@ -65,3 +68,19 @@ def reanudar_musica():
     """Reanuda la música pausada"""
     if pygame.mixer.music.get_busy():
         pygame.mixer.music.unpause()
+
+def iniciar_musica_partida():
+    try:
+        ruta = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "sounds",
+            "musica_partida.mp3"
+        )
+        if os.path.exists(ruta):
+            pygame.mixer.music.load(ruta)
+            pygame.mixer.music.set_volume(volumen_actual)
+            pygame.mixer.music.play(-1)
+        else:
+            print(f"Archivo de música no encontrado: {ruta}")
+    except Exception as e:
+        print(f"Error al cargar música de partida: {e}")
