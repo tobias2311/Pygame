@@ -1,11 +1,7 @@
         <<--- PASOS QUE NOS QUEDAN --->>
 
-falta la funcion de ajuste
+falta la funcion de ajuste(agregar tiempo para responder, si se puede meter los bosses)TDAH
 
-modularizar logica_juego
+crear un main para q solo corra el juego como el juego en consola
 
-agregar tiempo para responder
 
-agregar los bosses
-
-agregar los multiplicadores para las dificultades facil(0.96) pro(1.50) experto(2)

@@ -15,14 +15,14 @@
     "usuario2": {
         "nombre": "tobi",
         "contra": "123",
-        "ultimo_puntaje": 3.68,
-        "total_respuestas_correctas": 207,
-        "total_puntaje_acumulado": 1098.714375,
-        "total_de_veces_jugadas": 21,
-        "total_aciertos": 207,
+        "ultimo_puntaje": 53.41,
+        "total_respuestas_correctas": 219,
+        "total_puntaje_acumulado": 1152.124375,
+        "total_de_veces_jugadas": 22,
+        "total_aciertos": 219,
         "total_errores": 55,
         "puntaje_max": 140.0,
-        "porcentaje_winrate": 82.1,
+        "porcentaje_winrate": 83.0,
         "rango": "Leyenda\ud83d\udc8e"
     },
     "usuario3": {

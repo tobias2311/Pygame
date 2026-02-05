@@ -19,8 +19,7 @@ def cargar_preguntas_desde_csv():
                         fila.get("opcion3", ""),
                         fila.get("opcion4", "")
                     ],
-                    "categoria": fila.get("categoria", ""),
-                    "puntos": int(fila.get("puntos", "1"))
+                    "categoria": fila.get("categoria", "")
                 })
     except FileNotFoundError:
         print(f"No se encontró el archivo: {ruta_csv}")

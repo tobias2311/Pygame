@@ -2,13 +2,16 @@ import pygame
 import sys
 import os
 
-from logica_juego import (
+# Importar módulos propios
+from constantes import ANCHO_VENTANA, ALTO_VENTANA, PROJ_ROOT, COLORES
+from recursos import cargar_fondos, cargar_fuentes
+from pantallas import (
     mostrar_pantalla_seleccion,
-    iniciar_juego,
     mostrar_pantalla_ajustes,
     mostrar_pantalla_guia,
     mostrar_pantalla_estadisticas
 )
+from juego import iniciar_juego
 from manejo_usuarios import mostrar_pantalla_registro, mostrar_pantalla_login
 from botones import crear_boton_texto, dibujar_boton
 from musica import (
@@ -26,10 +29,6 @@ usuario_actual = None
 ruta_json_usuarios = ""
 menu_fondo_escalado = None
 
-ANCHO_VENTANA = 1400
-ALTO_VENTANA = 800
-PROJ_ROOT = os.path.dirname(os.path.dirname(__file__))
-
 
 def main():
     global usuario_actual, ruta_json_usuarios, menu_fondo_escalado
@@ -45,47 +44,15 @@ def main():
 
     ruta_json_usuarios = os.path.join(PROJ_ROOT, "datos_usuario.json")
 
-   # ---------------- FONDOS (MÉTODO ORIGINAL RESTAURADO) ----------------
-    nombre_archivo_fondo = "menu_ia.png"
-    nombre_archivo_juego = "juego_ia.png" # Nombre del fondo de aventura
-
-    # --- CARGA FONDO MENÚ (Tu lógica exacta) ---
-    ruta_posible = os.path.join(os.path.dirname(__file__), "Bocetos", nombre_archivo_fondo)
-    if os.path.exists(ruta_posible):
-        menu_fondo = pygame.image.load(ruta_posible)
-    else:
-        ruta_alternativa = os.path.join(PROJ_ROOT, "Bocetos", nombre_archivo_fondo)
-        if os.path.exists(ruta_alternativa):
-            menu_fondo = pygame.image.load(ruta_alternativa)
-        else:
-            menu_fondo = pygame.Surface((ANCHO_VENTANA, ALTO_VENTANA))
-            menu_fondo.fill((50, 50, 50))
-
-    menu_fondo_escalado = pygame.transform.scale(menu_fondo, (ANCHO_VENTANA, ALTO_VENTANA))
-
-    # --- CARGA FONDO JUEGO (Mismo método que el anterior) ---
-    ruta_juego_posible = os.path.join(os.path.dirname(__file__), "Bocetos", nombre_archivo_juego)
-    if os.path.exists(ruta_juego_posible):
-        fondo_juego = pygame.image.load(ruta_juego_posible)
-    else:
-        # Intento con ruta alternativa usando PROJ_ROOT
-        ruta_juego_alternativa = os.path.join(PROJ_ROOT, "Bocetos", nombre_archivo_juego)
-        if os.path.exists(ruta_juego_alternativa):
-            fondo_juego = pygame.image.load(ruta_juego_alternativa)
-        else:
-            # Fallback a juego.png por si acaso
-            ruta_juego_viejo = os.path.join(os.path.dirname(__file__), "Bocetos", "juego.png")
-            if os.path.exists(ruta_juego_viejo):
-                fondo_juego = pygame.image.load(ruta_juego_viejo)
-            else:
-                fondo_juego = pygame.Surface((ANCHO_VENTANA, ALTO_VENTANA))
-                fondo_juego.fill((30, 30, 30))
-
-    fondo_juego_escalado = pygame.transform.scale(fondo_juego, (ANCHO_VENTANA, ALTO_VENTANA))
-    # ---------------- FUENTES ----------------
-    fuente_titulo = pygame.font.Font(None, 48)
-    fuente_ajustes = pygame.font.Font(None, 36)
-    fuente_info = pygame.font.Font(None, 28)
+    # ---------------- FONDOS Y FUENTES ----------------
+    fondos = cargar_fondos()
+    menu_fondo_escalado = fondos['menu']
+    fondo_juego_escalado = fondos['juego']
+    
+    fuentes = cargar_fuentes()
+    fuente_titulo = fuentes['titulo']
+    fuente_ajustes = fuentes['ajustes']
+    fuente_info = fuentes['info']
 
     # ---------------- ESTADOS Y BOTONES ----------------
     estado_actual = "pre_menu"
@@ -93,16 +60,16 @@ def main():
     dificultad_seleccionada = ""
     tematica_seleccionada = ""
 
-    # Botones (mantengo tus coordenadas originales)
-    boton_comenzar_juego = crear_boton_texto("Comenzar Juego", fuente_ajustes, (255, 255, 255), (0, 150, 0), (0, 100, 0), (0, 200, 0), (50, 300), (250, 80))
-    boton_guia = crear_boton_texto("Guía", fuente_ajustes, (255, 255, 255), (0, 0, 255), (0, 0, 139), (0, 0, 200), (50, 420), (250, 80))
-    boton_estadisticas = crear_boton_texto("Estadísticas", fuente_ajustes, (255, 255, 255), (255, 0, 255), (150, 0, 150), (255, 100, 255), (50, 540), (250, 80))
-    boton_ajustes = crear_boton_texto("Ajustes", fuente_ajustes, (255, 255, 255), (150, 150, 0), (100, 100, 0), (200, 200, 0), (1100, 300), (250, 80))
-    boton_salir = crear_boton_texto("Salir", fuente_ajustes, (255, 255, 255), (150, 0, 0), (100, 0, 0), (200, 0, 0), (1100, 420), (250, 80))
-    boton_bajar_volumen = crear_boton_texto("-", fuente_info, (255, 255, 255), (200, 0, 0), (100, 0, 0), (255, 50, 50), (1100, 540), (50, 50))
-    boton_subir_volumen = crear_boton_texto("+", fuente_info, (255, 255, 255), (0, 200, 0), (0, 100, 0), (50, 255, 50), (1160, 540), (50, 50))
-    boton_login = crear_boton_texto("Iniciar Sesión", fuente_ajustes, (255, 255, 255), (0, 0, 150), (0, 0, 80), (0, 0, 200), (450, 400), (250, 80))
-    boton_registro = crear_boton_texto("Registrarse", fuente_ajustes, (255, 255, 255), (0, 150, 0), (0, 80, 0), (0, 200, 0), (750, 400), (250, 80))
+    # Botones (usando constantes de colores)
+    boton_comenzar_juego = crear_boton_texto("Comenzar Juego", fuente_ajustes, COLORES["BLANCO"], COLORES["VERDE"], COLORES["VERDE_OSCURO"], COLORES["VERDE_CLARO"], (50, 300), (250, 80))
+    boton_guia = crear_boton_texto("Guía", fuente_ajustes, COLORES["BLANCO"], COLORES["AZUL"], COLORES["AZUL_OSCURO"], COLORES["AZUL_CLARO"], (50, 420), (250, 80))
+    boton_estadisticas = crear_boton_texto("Estadísticas", fuente_ajustes, COLORES["BLANCO"], COLORES["MAGENTA"], COLORES["MAGENTA_OSCURO"], COLORES["MAGENTA_CLARO"], (50, 540), (250, 80))
+    boton_ajustes = crear_boton_texto("Ajustes", fuente_ajustes, COLORES["BLANCO"], COLORES["AMARILLO"], COLORES["AMARILLO_OSCURO"], COLORES["AMARILLO_CLARO"], (1100, 300), (250, 80))
+    boton_salir = crear_boton_texto("Salir", fuente_ajustes, COLORES["BLANCO"], COLORES["ROJO"], COLORES["ROJO_OSCURO"], COLORES["ROJO_CLARO"], (1100, 420), (250, 80))
+    boton_bajar_volumen = crear_boton_texto("-", fuente_info, COLORES["BLANCO"], COLORES["ROJO_CLARO"], COLORES["ROJO_OSCURO"], (255, 50, 50), (1100, 540), (50, 50))
+    boton_subir_volumen = crear_boton_texto("+", fuente_info, COLORES["BLANCO"], COLORES["VERDE_CLARO"], COLORES["VERDE_OSCURO"], (50, 255, 50), (1160, 540), (50, 50))
+    boton_login = crear_boton_texto("Iniciar Sesión", fuente_ajustes, COLORES["BLANCO"], COLORES["AZUL"], COLORES["AZUL_OSCURO"], COLORES["AZUL_CLARO"], (450, 400), (250, 80))
+    boton_registro = crear_boton_texto("Registrarse", fuente_ajustes, COLORES["BLANCO"], COLORES["VERDE"], COLORES["VERDE_OSCURO"], COLORES["VERDE_CLARO"], (750, 400), (250, 80))
 
     while True:
         for evento in pygame.event.get():
