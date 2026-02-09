@@ -9,13 +9,12 @@ import os
 from botones import crear_boton_texto, dibujar_boton
 from cargar_datos import cargar_preguntas_desde_csv
 from musica import subir_volumen, bajar_volumen, set_volumen
-from constantes import COLORES, NUM_PREGUNTAS, PUNTOS_POR_DIFICULTAD
+from constantes import ANCHO_VENTANA, ALTO_VENTANA, COLORES, NUM_PREGUNTAS, PUNTOS_POR_DIFICULTAD
 
 
 def iniciar_juego(ventana, dificultad, tematica, volumen_actual, ANCHO_VENTANA, ALTO_VENTANA, 
-                  fondo_juego_escalado, nombre_jugador="", ruta_json_usuarios=""):
+                  fondo_juego_escalado, nombre_jugador="", ruta_json_usuarios="", modo_tdah=False):
    
-    fuente_titulo = pygame.font.Font(None, 48)
     fuente_info = pygame.font.Font(None, 24)
     fuente_pregunta = pygame.font.Font(None, 50)
     fuente_opciones = pygame.font.Font(None, 36)
@@ -46,17 +45,33 @@ def iniciar_juego(ventana, dificultad, tematica, volumen_actual, ANCHO_VENTANA, 
     puntaje_total = 0
     preguntas_a_usar = random.sample(preguntas, min(NUM_PREGUNTAS, len(preguntas)))
     
+    # Temporizador Global para Modo TDAH (60 segundos para toda la partida)
+    tiempo_inicio_partida = pygame.time.get_ticks()
+    tiempo_limite_total = 60 * 1000 # 60 segundos en ms
+    
+    aciertos_consecutivos = 0
+    mensajes_motivadores = ["¡Vas muy bien!", "¡Excelente racha!", "¡Seguí así!", "¡Sos un genio!", "¡Increíble!"]
+
     for pregunta in preguntas_a_usar:
         estado_pregunta, nuevo_volumen = mostrar_pregunta(
             ventana, pregunta, dificultad, tematica, volumen_actual, ANCHO_VENTANA, ALTO_VENTANA,
-            fondo_juego_escalado, boton_bajar_volumen, boton_subir_volumen, boton_salir_juego
+            fondo_juego_escalado, boton_bajar_volumen, boton_subir_volumen, boton_salir_juego, 
+            modo_tdah=modo_tdah, tiempo_inicio_partida=tiempo_inicio_partida, tiempo_limite_total=tiempo_limite_total
         )
         volumen_actual = nuevo_volumen
         
         if estado_pregunta == "menu":
             return "menu", volumen_actual
+        elif estado_pregunta == "tiempo_agotado":
+            # Si se acaba el tiempo global, terminamos la partida
+            break
         elif estado_pregunta == "correcto":
             puntaje_total += PUNTOS_POR_DIFICULTAD[dificultad]
+            aciertos_consecutivos += 1
+            if modo_tdah and aciertos_consecutivos % 3 == 0:
+                mostrar_mensaje_animo(ventana, random.choice(mensajes_motivadores), ANCHO_VENTANA, ALTO_VENTANA)
+        else:
+            aciertos_consecutivos = 0
     
     mostrar_tablero_puntuacion(ventana, puntaje_total, ANCHO_VENTANA, ALTO_VENTANA, nombre_jugador, ruta_json_usuarios)
     
@@ -64,7 +79,8 @@ def iniciar_juego(ventana, dificultad, tematica, volumen_actual, ANCHO_VENTANA, 
 
 
 def mostrar_pregunta(ventana, pregunta, dificultad, tematica, volumen_actual, ANCHO_VENTANA, ALTO_VENTANA,
-                     fondo_juego_escalado, boton_bajar_volumen, boton_subir_volumen, boton_salir_juego):
+                     fondo_juego_escalado, boton_bajar_volumen, boton_subir_volumen, boton_salir_juego, 
+                      modo_tdah=False, tiempo_inicio_partida=0, tiempo_limite_total=60000):
    
     pygame.key.set_repeat(200, 50)
     
@@ -72,6 +88,7 @@ def mostrar_pregunta(ventana, pregunta, dificultad, tematica, volumen_actual, AN
     fuente_opciones = pygame.font.Font(None, 36)
     fuente_info = pygame.font.Font(None, 24)
     fuente_feedback = pygame.font.Font(None, 48)
+    fuente_timer = pygame.font.Font(None, 60) # Fuente más grande para el temporizador
     
     respuesta_usuario = ""
     input_activo = False
@@ -114,10 +131,23 @@ def mostrar_pregunta(ventana, pregunta, dificultad, tematica, volumen_actual, AN
                                       (x_pos, y_pos), (ancho_boton, alto_boton))
             botones_opciones.append(boton)
     
+    # Eliminado temporizador por pregunta para usar el global
+    
     while pregunta_activa:
         # Si hay feedback y pasó el tiempo, retornar resultado
         if feedback_activo and (pygame.time.get_ticks() - feedback_inicio_tiempo > 1500):
             return resultado_pregunta, volumen_actual
+
+        # Lógica del temporizador global
+        if modo_tdah and not feedback_activo:
+            tiempo_transcurrido = pygame.time.get_ticks() - tiempo_inicio_partida
+            tiempo_restante_ms = max(0, tiempo_limite_total - tiempo_transcurrido)
+            if tiempo_restante_ms <= 0:
+                feedback_activo = True
+                resultado_pregunta = "tiempo_agotado"
+                feedback_texto = "¡Tiempo finalizado!"
+                feedback_color = COLORES["ROJO_FEEDBACK"]
+                feedback_inicio_tiempo = pygame.time.get_ticks()
 
         # Procesar eventos
         for evento in pygame.event.get():
@@ -199,6 +229,14 @@ def mostrar_pregunta(ventana, pregunta, dificultad, tematica, volumen_actual, AN
             # Dibujar botones de opciones para Fácil y Pro
             for boton in botones_opciones:
                 dibujar_boton(ventana, boton)
+
+        # Dibujar temporizador global si Modo TDAH está activo
+        if modo_tdah:
+            tiempo_transcurrido = pygame.time.get_ticks() - tiempo_inicio_partida
+            tiempo_restante_seg = max(0, (tiempo_limite_total - tiempo_transcurrido) // 1000)
+            color_timer = COLORES["BLANCO"] if tiempo_restante_seg > 10 else COLORES["ROJO_FEEDBACK"]
+            sup_timer = fuente_timer.render(f"Tiempo Partida: {tiempo_restante_seg}s", True, color_timer)
+            ventana.blit(sup_timer, (ANCHO_VENTANA // 2 - sup_timer.get_width() // 2, 60))
 
         # Feedback (si está activo)
         if feedback_activo:
@@ -282,3 +320,16 @@ def mostrar_tablero_puntuacion(ventana, puntaje, ANCHO_VENTANA, ALTO_VENTANA, no
         dibujar_boton(ventana, boton_volver)
 
         pygame.display.update()
+
+def mostrar_mensaje_animo(ventana, mensaje, ANCHO, ALTO):
+    """Muestra un mensaje motivacional temporal"""
+    fuente = pygame.font.Font(None, 60)
+    superficie = fuente.render(mensaje, True, (0, 255, 255))
+    rect = superficie.get_rect(center=(ANCHO // 2, ALTO // 2 + 200))
+    
+    # Animación simple (subir un poco)
+    for i in range(30):
+        # Redibujar fondo en esa zona (o simplificar con un delay)
+        ventana.blit(superficie, rect)
+        pygame.display.update(rect)
+        pygame.time.delay(30)

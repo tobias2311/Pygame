@@ -1,6 +1,7 @@
 import pygame
 import sys
 import os
+import json
 
 # Importar módulos propios
 from constantes import ANCHO_VENTANA, ALTO_VENTANA, PROJ_ROOT, COLORES
@@ -28,10 +29,12 @@ from musica import (
 usuario_actual = None
 ruta_json_usuarios = ""
 menu_fondo_escalado = None
+ruta_config = ""
 
 
-def main():
-    global usuario_actual, ruta_json_usuarios, menu_fondo_escalado
+def abrir_juego():
+    """Función principal que inicia y ejecuta el juego."""
+    global usuario_actual, ruta_json_usuarios, menu_fondo_escalado, ruta_config
 
     pygame.init()
     pygame.mixer.init()
@@ -43,6 +46,9 @@ def main():
     iniciar_musica()
 
     ruta_json_usuarios = os.path.join(PROJ_ROOT, "datos_usuario.json")
+    # Usar ruta absoluta basada en la ubicación de este archivo
+    directorio_actual = os.path.dirname(os.path.abspath(__file__))
+    ruta_config = os.path.join(directorio_actual, "config.json")
 
     # ---------------- FONDOS Y FUENTES ----------------
     fondos = cargar_fondos()
@@ -94,17 +100,12 @@ def main():
         # ---------------- DIBUJO DE ESTADOS ----------------
         if estado_actual == "pre_menu":
             VENTANA.blit(menu_fondo_escalado, (0, 0))
-            # Comentamos el render del título porque la imagen ya lo tiene
-            # titulo = fuente_titulo.render("Desafio Mental", True, (255, 0, 255))
-            # VENTANA.blit(titulo, (ANCHO_VENTANA // 2 - titulo.get_width() // 2, 100))
             dibujar_boton(VENTANA, boton_login)
             dibujar_boton(VENTANA, boton_registro)
 
         elif estado_actual == "menu":
             if not pygame.mixer.music.get_busy(): iniciar_musica()
             VENTANA.blit(menu_fondo_escalado, (0, 0))
-            
-            # (Aquí también podrías comentar la imagen de 'titulo.png' si la estabas usando)
             
             if nombre_jugador:
                 mensaje = fuente_info.render(f"¡Bienvenido, {nombre_jugador}!", True, (255, 255, 0))
@@ -136,17 +137,24 @@ def main():
             if resultado_seleccion: dificultad_seleccionada, tematica_seleccionada = resultado_seleccion; detener_musica(); iniciar_musica_partida(); estado_actual = "juego"
             else: estado_actual = "menu"
         elif estado_actual == "juego":
-            nuevo_estado, _ = iniciar_juego(VENTANA, dificultad_seleccionada, tematica_seleccionada, get_volumen(), ANCHO_VENTANA, ALTO_VENTANA, fondo_juego_escalado, nombre_jugador, ruta_json_usuarios)
+            # Cargar config para saber si Modo TDAH está activo
+            modo_tdah = False
+            if os.path.exists(ruta_config):
+                try:
+                    with open(ruta_config, 'r', encoding='utf-8') as f:
+                        cfg = json.load(f)
+                        modo_tdah = cfg.get("modo_tdah", False)
+                except Exception as e:
+                    print(f"Error al cargar config: {e}")
+
+            nuevo_estado, _ = iniciar_juego(VENTANA, dificultad_seleccionada, tematica_seleccionada, get_volumen(), ANCHO_VENTANA, ALTO_VENTANA, fondo_juego_escalado, nombre_jugador, ruta_json_usuarios, modo_tdah)
             if nuevo_estado == "menu": detener_musica(); iniciar_musica()
             estado_actual = nuevo_estado
         elif estado_actual == "ajustes":
-            estado_actual = mostrar_pantalla_ajustes(VENTANA)
+            estado_actual = mostrar_pantalla_ajustes(VENTANA, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENTANA, ruta_config)
         elif estado_actual == "guia":
             estado_actual = mostrar_pantalla_guia(VENTANA, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENTANA)
         elif estado_actual == "estadisticas":
             estado_actual = mostrar_pantalla_estadisticas(VENTANA, nombre_jugador, ruta_json_usuarios, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENTANA)
 
         pygame.display.update()
-
-if __name__ == "__main__":
-    main()

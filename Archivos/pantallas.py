@@ -75,8 +75,81 @@ def mostrar_pantalla_seleccion(ventana):
     return (dificultad_elegida, tematica_elegida)
 
 
-def mostrar_pantalla_ajustes(ventana):
+def mostrar_pantalla_ajustes(ventana, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENTANA, ruta_config):
+    fuente_titulo = pygame.font.Font(None, 70)
+    fuente_opcion = pygame.font.Font(None, 45)
+    fuente_info = pygame.font.Font(None, 32)
+    
+    # Cargar configuración actual usando ruta absoluta
+    directorio_actual = os.path.dirname(os.path.abspath(__file__))
+    ruta_config_abs = os.path.join(directorio_actual, "config.json")
+    
+    try:
+        if os.path.exists(ruta_config_abs):
+            with open(ruta_config_abs, 'r', encoding='utf-8') as f:
+                config_data = json.load(f)
+        else:
+            config_data = {"modo_tdah": False}
+    except:
+        config_data = {"modo_tdah": False}
 
+    reloj = pygame.time.Clock()
+    ajustes_activos = True
+    
+    while ajustes_activos:
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = evento.pos
+                
+                # Rectángulo para el toggle del Modo TDAH
+                rect_toggle = pygame.Rect(ANCHO_VENTANA // 2 + 50, 400, 100, 50)
+                if rect_toggle.collidepoint(mouse_pos):
+                    config_data["modo_tdah"] = not config_data.get("modo_tdah", False)
+                    # Guardar inmediatamente usando la ruta absoluta definida al inicio
+                    with open(ruta_config_abs, 'w', encoding='utf-8') as f:
+                        json.dump(config_data, f, indent=4)
+                
+                # Botón volver
+                rect_volver = pygame.Rect(ANCHO_VENTANA // 2 - 75, 600, 150, 60)
+                if rect_volver.collidepoint(mouse_pos):
+                    ajustes_activos = False
+
+        ventana.blit(menu_fondo_escalado, (0, 0))
+        
+        titulo = fuente_titulo.render("AJUSTES", True, COLORES["CYAN"])
+        ventana.blit(titulo, (ANCHO_VENTANA // 2 - titulo.get_width() // 2, 250))
+        
+        # Etiqueta Modo TDAH
+        texto_tdah = fuente_opcion.render("Modo TDAH (Timer + Ánimo):", True, COLORES["BLANCO"])
+        ventana.blit(texto_tdah, (ANCHO_VENTANA // 2 - 350, 405))
+        
+        # Dibujar Toggle
+        color_toggle = COLORES["VERDE"] if config_data.get("modo_tdah", False) else COLORES["ROJO"]
+        rect_toggle = pygame.Rect(ANCHO_VENTANA // 2 + 50, 400, 100, 50)
+        pygame.draw.rect(ventana, color_toggle, rect_toggle, 0, 10)
+        pygame.draw.rect(ventana, COLORES["BLANCO"], rect_toggle, 2, 10)
+        
+        texto_estado = "ON" if config_data.get("modo_tdah", False) else "OFF"
+        sup_estado = fuente_info.render(texto_estado, True, COLORES["BLANCO"])
+        ventana.blit(sup_estado, (rect_toggle.centerx - sup_estado.get_width() // 2, rect_toggle.centery - sup_estado.get_height() // 2))
+        
+        # Botón Volver
+        rect_volver = pygame.Rect(ANCHO_VENTANA // 2 - 75, 600, 150, 60)
+        mouse_pos = pygame.mouse.get_pos()
+        color_volver = COLORES["AZUL_CLARO"] if rect_volver.collidepoint(mouse_pos) else COLORES["AZUL"]
+        pygame.draw.rect(ventana, color_volver, rect_volver, 0, 5)
+        pygame.draw.rect(ventana, COLORES["AZUL_OSCURO"], rect_volver, 3, 5)
+        
+        sup_volver = fuente_info.render("VOLVER", True, COLORES["BLANCO"])
+        ventana.blit(sup_volver, (rect_volver.centerx - sup_volver.get_width() // 2, rect_volver.centery - sup_volver.get_height() // 2))
+        
+        pygame.display.update()
+        reloj.tick(60)
+        
     return "menu"
 
 
@@ -138,7 +211,8 @@ def mostrar_pantalla_guia(ventana, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENT
                 y_offset += tamaño + 15
         
         fuente_info = pygame.font.Font(None, 30)
-        progreso = fuente_info.render(f"ENTER para continuar... ({indice_parrafo + 1}/{len(parrafos)})", True, COLORES["NARANJA_TEXTO"])
+        texto_continuar = "ENTER para volver al menú" if indice_parrafo == len(parrafos) - 1 else f"ENTER para continuar... ({indice_parrafo + 1}/{len(parrafos)})"
+        progreso = fuente_info.render(texto_continuar, True, COLORES["NARANJA_TEXTO"])
         ventana.blit(progreso, (ANCHO_VENTANA // 2 - progreso.get_width() // 2, ALTO_VENTANA - 70))
         
         fuente_escape = pygame.font.Font(None, 28)
@@ -149,6 +223,7 @@ def mostrar_pantalla_guia(ventana, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENT
         reloj.tick(60)
     
     return "menu"
+
 
 
 def mostrar_pantalla_estadisticas(ventana, nombre_jugador, ruta_json_usuarios, menu_fondo_escalado, ANCHO_VENTANA, ALTO_VENTANA):

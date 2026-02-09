@@ -2,9 +2,9 @@
     "tobi": {
         "contrasena": "1",
         "estadisticas": {
-            "total_puntos": 223,
-            "ultimo_puntaje": 24,
-            "partidas_jugadas": 25
+            "total_puntos": 404,
+            "ultimo_puntaje": 8,
+            "partidas_jugadas": 46
         }
     },
     "p": {
@@ -45,6 +45,14 @@
             "total_puntos": 24,
             "ultimo_puntaje": 24,
             "partidas_jugadas": 2
+        }
+    },
+    "silvi": {
+        "contrasena": "12",
+        "estadisticas": {
+            "total_puntos": 24,
+            "ultimo_puntaje": 24,
+            "partidas_jugadas": 1
         }
     }
 }

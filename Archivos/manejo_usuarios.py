@@ -1,6 +1,8 @@
 import json
 import os
-import hashlib
+import pygame
+import sys
+
 
 def cargar_datos_usuario(ruta_json):
     """Carga los datos de usuarios desde el archivo JSON"""
@@ -17,13 +19,9 @@ def guardar_datos_usuario(ruta_json, datos):
     with open(ruta_json, 'w', encoding='utf-8') as archivo:
         json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
-def hash_contrasena(contrasena):
-    """Genera un hash de la contraseña"""
-    return hashlib.sha256(contrasena.encode()).hexdigest()
+
 
 def mostrar_pantalla_registro(ventana, ANCHO, ALTO, fuente_titulo, fuente_ajustes, fuente_info, crear_boton_texto, dibujar_boton, ruta_json):
-    import pygame
-    import sys
     
     texto_usuario = ""
     texto_contrasena = ""
@@ -144,8 +142,6 @@ def mostrar_pantalla_registro(ventana, ANCHO, ALTO, fuente_titulo, fuente_ajuste
         pygame.display.update()
 
 def mostrar_pantalla_login(ventana, ANCHO, ALTO, fuente_titulo, fuente_ajustes, fuente_info, crear_boton_texto, dibujar_boton, ruta_json):
-    import pygame
-    import sys
     
     texto_usuario = ""
     texto_contrasena = ""

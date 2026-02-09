@@ -4,8 +4,6 @@ import os
 # Variables de volumen
 volumen_actual = 0.5
 
-# Variable para almacenar la música actual
-musica_actual = None
 
 def set_volumen(vol):
     """Establece el volumen global"""
@@ -58,16 +56,6 @@ def detener_musica():
     """Detiene la música"""
     if pygame.mixer.music.get_busy():
         pygame.mixer.music.stop()
-
-def pausar_musica():
-    """Pausa la música"""
-    if pygame.mixer.music.get_busy():
-        pygame.mixer.music.pause()
-
-def reanudar_musica():
-    """Reanuda la música pausada"""
-    if pygame.mixer.music.get_busy():
-        pygame.mixer.music.unpause()
 
 def iniciar_musica_partida():
     try:
