@@ -24,19 +24,41 @@ Este módulo es el responsable de toda la entrada de datos.
 
 ## 🔹 Fase 2: Infraestructura Gráfica (Frontend)
 
-### Sprint 5: Gestión de Recursos
+### Sprint 3: Gestión de Recursos
 Para que el juego sea fluido, los recursos (imágenes, sonidos, fuentes) deben gestionarse de manera inteligente.
 
 #### 📁 Módulo: `grafica/carga_recursos.py`
 Este módulo centraliza la carga de assets, asegurando que se realice **una sola vez** al inicio.
 - **Automatización de Rutas**: Utilizamos la biblioteca `os` para calcular rutas relativas.
     - *Defensa Técnica*: "Al usar `os.path.join` y detectar la ubicación del proyecto dinámicamente, aseguramos la **portabilidad**. El juego funcionará en cualquier computadora sin necesidad de cambiar las rutas de las carpetas".
-- **Carga de Imágenes**: Implementamos una carga directa y simple.
-    - *Defensa Técnica*: "Mantenemos una función centralizada de carga de imágenes para facilitar futuros cambios en el formato de los archivos visuales".
-- **Fuentes Parametrizadas**: A diferencia de la versión anterior, los tamaños de las fuentes vienen del JSON de configuración.
-    - *Defensa Técnica*: "La función `cargar_fuentes` recibe los tamaños de un diccionario externo. Esto es un ejemplo de **Inyección de Dependencias**, donde la interfaz gráfica no necesita saber de dónde vienen los datos, solo cómo usarlos".
-- **Gestión de Sonido**: Separamos el streaming de música para optimizar el uso de memoria.
-    - *Defensa Técnica*: "Centralizamos la música para poder escalarla fácilmente y permitir que cualquier parte del programa pueda disparar pistas de audio".
+- **Robustez sin Excepciones**: Verificamos la existencia de archivos con `os.path.exists`.
+    - *Defensa Técnica*: "En lugar de usar `try-except`, aplicamos validación por flujo lógico para que el programa sea predecible y cumpla con las restricciones de la cátedra, cargando superficies de color como placeholders si faltan imágenes".
+
+### Sprint 4: Componentes de Interfaz e Interacción
+Creamos una librería de UI propia para manejar la interacción con el usuario de manera profesional.
+
+#### 📁 Módulo: `grafica/componentes.py`
+- **Clase `Boton`**: Encapsula el dibujado, la detección de hover y el click.
+    - *Defensa Técnica*: "Al crear una clase para los botones, logramos **reutilización de código**. En lugar de repetir la lógica del mouse en cada pantalla, simplemente instanciamos objetos que saben cómo reaccionar y dibujarse solos".
+- **Posicionamiento Relativo**: Los botones se ubican usando porcentajes (0.0 a 1.0) de la pantalla.
+    - *Defensa Técnica*: "Esto permite que la interfaz sea **adaptable**. Si cambiamos la resolución del juego en el JSON, los botones se reacomodan automáticamente manteniendo la proporción visual".
+
+### Sprint 5: Punto de Entrada y Orquestación
+
+#### 📁 Módulo: `pygame_app/main.py`
+Es el cerebro que une la lógica de carga, los recursos y la interfaz.
+- **Cero Hardcodeo**: Se eliminaron todos los valores fijos. Colores, dimensiones, textos y reglas de juego vienen del JSON.
+    - *Defensa Técnica*: "Toda la configuración es externa. Esto permite realizar cambios estéticos o de dificultad sin necesidad de modificar el código fuente, garantizando una **separación total entre datos y ejecución**".
+- **Loop de Eventos Explícito**: El bucle principal gestiona eventos, actualizaciones y dibujado de forma secuencial.
+    - *Defensa Técnica*: "Mantenemos un loop limpio donde la lógica de actualización (`update`) y el renderizado (`draw`) están separados, siguiendo los estándares de desarrollo de videojuegos".
 
 ---
-*(Este documento se irá completando con explicaciones técnicas de cada función clave)*
+
+## 🛠️ Reglas Éticas y Técnicas de Programación
+Durante todo el desarrollo, seguimos principios fundamentales para una defensa exitosa:
+1. **Control de Flujo Explícito**: Se evitó el uso de `not` y `try-except` (fuera de la persistencia obligatoria) para demostrar un manejo lógico total de las variables.
+2. **Comparación Explícita**: Usamos comparaciones como `if variable == True` para que el código sea autodocumentado y fácil de explicar ante una mesa de examen.
+3. **Modularidad**: Cada carpeta y archivo tiene una única responsabilidad (Principio de Responsabilidad Única).
+
+---
+*Última actualización: Febrero 2026 - Versión: Componentes y Entry Point finalizados.*
