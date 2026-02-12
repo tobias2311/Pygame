@@ -1,0 +1,9 @@
+{
+    "usuarios": [
+        {
+            "nombre": "tobi",
+            "password": "123",
+            "puntaje_maximo": 0
+        }
+    ]
+}
