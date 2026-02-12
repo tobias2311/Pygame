@@ -49,6 +49,16 @@
             100,
             100,
             100
+        ],
+        "azul_oscuro": [
+            20,
+            30,
+            60
+        ],
+        "celeste": [
+            100,
+            200,
+            255
         ]
     },
     "juego": {
@@ -63,5 +73,42 @@
         "subtitulo": 50,
         "cuerpo": 36,
         "info": 24
+    },
+    "ui": {
+        "menu_principal": {
+            "boton_inicio": {
+                "texto": "COMENZAR JUEGO",
+                "ancho": 400,
+                "alto": 80,
+                "x_relativo": 0.5,
+                "y_relativo": 0.5,
+                "color_base": "azul_oscuro",
+                "color_hover": "celeste",
+                "color_texto": "blanco",
+                "radio_borde": 15
+            },
+            "boton_config": {
+                "texto": "CONFIGURACIÓN",
+                "ancho": 400,
+                "alto": 80,
+                "x_relativo": 0.5,
+                "y_relativo": 0.65,
+                "color_base": "azul_oscuro",
+                "color_hover": "celeste",
+                "color_texto": "blanco",
+                "radio_borde": 15
+            },
+            "boton_salir": {
+                "texto": "SALIR",
+                "ancho": 400,
+                "alto": 80,
+                "x_relativo": 0.5,
+                "y_relativo": 0.8,
+                "color_base": "rojo",
+                "color_hover": "magenta",
+                "color_texto": "blanco",
+                "radio_borde": 15
+            }
+        }
     }
 }
