@@ -60,7 +60,8 @@ Implementamos un sistema de persistencia para los jugadores en `data/cuentas.jso
 #### 📁 Módulos: `seleccion.py` y `juego.py`
 - **Selección de Temática y Dificultad**: El usuario personaliza su partida antes de empezar.
 - **Filtrado Dinámico**: Se filtran las preguntas del CSV según lo elegido.
-    - *Defensa Técnica*: "Aplicamos algoritmos de búsqueda y filtrado sobre la base de preguntas. La puntuación se ajusta dinámicamente (1, 2 o 5 puntos) basándose en la dificultad, demostrando un manejo avanzado de lógica de control".
+- **Filtrado Dinámico**: Se filtran las preguntas del CSV según lo elegido.
+    - *Defensa Técnica*: "Aplicamos algoritmos de búsqueda y filtrado sobre la base de preguntas. La puntuación se ajusta dinámicamente (1, 2 o 5 puntos) basándose en la dificultad. Se implementó una lógica de **aislamiento de temáticas**, donde si un tema no llega a las 12 preguntas, el sistema no las rellena con otros temas para mantener la integridad de la elección del usuario".
 
 ### Sprint 8: Multimedia y Experiencia de Usuario (UX)
 Agregamos la "capa de brillo" al proyecto para que se sienta como un producto final.
@@ -70,14 +71,43 @@ Agregamos la "capa de brillo" al proyecto para que se sienta como un producto fi
 - **UI Progresiva y Arte IA**: El fondo de IA se escala dinámicamente al tamaño de la ventana definido en el JSON.
     - *Defensa Técnica*: "Reservamos el fondo principal para el menú post-login, mejorando la jerarquía visual. Además, el escalado dinámico garantiza portabilidad gráfica".
 
+### Sprint 9: Modo Experto y Entrada de Texto Dinámica
+#### 📁 Módulos: `juego.py` y `componentes.py`
+- **Modo de Juego Diferenciado**: Implementamos una lógica condicional donde, según la dificultad, la interfaz muta de "opciones múltiples" a "entrada de texto directa".
+    - *Defensa Técnica*: "En el modo experto, eliminamos las opciones para aumentar la dificultad cognitiva. Implementamos un sistema de comparación de cadenas normalizado (strip/lower) para validar la respuesta escrita del usuario, demostrando manejo de procesamiento de texto".
+- **Caja de Entrada Inteligente**: La caja de texto (`InputBox`) ahora soporta auto-enfoque y límites de caracteres dinámicos (hasta 50).
+
+### Sprint 10: Refactorización y Arquitectura Decoupled (Desacoplada)
+#### 📁 Módulos: `logica/sonido.py` y `logica/juego_logica.py`
+- **Centralización de Sonido**: Extrajimos toda la lógica de volumen y mute a un módulo único.
+    - *Defensa Técnica*: "Aplicamos el principio de **No Repetición (DRY)**. Antes, la lógica de volumen estaba duplicada en cada pantalla; ahora, todas las interfaces llaman a una única función central, lo que facilita el mantenimiento y asegura coherencia sonora en todo el software".
+- **Separación de Concernimientos (Visual vs Lógica)**: Movimos la carga y validación de preguntas de `grafica/juego.py` a `logica/juego_logica.py`.
+    - *Defensa Técnica*: "Descentralizamos la pantalla de juego. Ahora, el código gráfico solo se encarga de dibujar (renderizar), mientras que el módulo de lógica toma las decisiones sobre puntajes y selección de preguntas. Esto hace que el código sea testeable y mucho más legible".
+
+### Sprint 12: Super-Modularización de Datos (High-Level Configuration)
+#### 📁 Carpeta: `data/*.json`
+- **Fragmentación de Configuración**: Dividimos el archivo `config.json` en 4 módulos especializados: `estilo.json` (estética), `layout.json` (posiciones), `sonidos.json` (audio) y `config.json` (reglas).
+    - *Defensa Técnica*: "Llevamos la arquitectura al siguiente nivel separando la **estética**, la **estructura** y la **lógica**. Esto permite que un diseñador gráfico pueda cambiar colores en `estilo.json` o mover botones en `layout.json` sin riesgo de romper la lógica de juego en Python, logrando un desacoplamiento casi total".
+
+### Sprint 13: Refinamiento de Código y Restricciones Técnicas
+#### 📁 Módulos: `seleccion.py`, `usuarios_ui.py` y `main.py`
+- **Eliminación de `enumerate`**: Reemplazamos todos los bucles `enumerate` por `range(len(...))`.
+    - *Defensa Técnica*: "Utilizamos iteraciones basadas en índices manuales para demostrar un control total sobre el recorrido de las estructuras de datos, siguiendo las restricciones pedagógicas de evitar funciones de alto nivel simplificadoras".
+- **Lógica de Estado en Retornos**: Sustituimos los retornos múltiples (`None, None`) por variables descriptivas de estado.
+    - *Defensa Técnica*: "Mejoramos la legibilidad del código utilizando el patrón de **punto de salida único**. Declaramos variables de estado al inicio de la función (ej. `pantalla_destino`) y las retornamos al final, haciendo que el flujo sea mucho más fácil de seguir y entender".
+- **Limpieza de Documentación**: Profesionalizamos los comentarios del código.
+    - *Defensa Técnica*: "Eliminamos comentarios redundantes o informales, dejando únicamente docstrings técnicos y explicaciones de propósito. El código ahora es autodocumentado por la claridad de sus nombres de variables y estructuras".
+
 ---
 
 ## 🛠️ Reglas Éticas y Técnicas de Programación
 Durante todo el desarrollo, seguimos principios fundamentales para una defensa exitosa:
-1. **Control de Flujo Explícito**: Se evitó el uso de `not` y `try-except` (fuera de la persistencia obligatoria) para demostrar un manejo lógico total de las variables.
+1. **Control de Flujo Explícito**: Se eliminó totalmente el uso de `not` y `try-except` (fuera de la persistencia obligatoria), utilizando banderas booleanas y comparaciones explícitas (`== True`, `== False`, `!= None`).
 2. **Comparación Explícita**: Usamos comparaciones como `if variable == True` para que el código sea autodocumentado.
-3. **Modularidad**: Cada carpeta y archivo tiene una única responsabilidad (Principio de Responsabilidad Única).
-4. **Programación Funcional**: Uso de diccionarios para representar estados complejos en lugar de clases, simplificando la estructura para el examen.
+3. **Modularidad Estricta**: Dividimos el proyecto en capas (Lógica, Gráfica, Datos) para demostrar una arquitectura profesional.
+4. **Resistencia a Errores de Interfaz**: Corregimos problemas latentes de eventos de mouse asegurando que la detección de clics use el origen del evento (`evento.pos`) en lugar de estados persistentes erróneos.
 
 ---
-*Última actualización: Febrero 2026 - Versión: Multimedia y Control Paramétrico finalizados.*
+
+---
+*Última actualización: Febrero 2026 - Versión: Modularización Extrema y Refinamiento de Código finalizados.*

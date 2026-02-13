@@ -7,22 +7,16 @@ Hemos dado un salto importante en la estética y la experiencia de usuario, inte
 
 ### Módulos Finalizados (Mantenimiento):
 - **Sistema de Archivos**: Carga de CSV y JSON centralizada.
-- **UI Paramétrica**: Interfaz 100% dependiente de `config.json` (incluyendo botones de volumen).
-- **Multimedia**: Fondos generados por IA aplicados al Menú y Juego. Música diferenciada para cada escena.
-- **Control de Sonido**: Botones de Vol+, Vol- y Mute integrados en Menú y Juego con sincronización global.
-- **Control de Usuarios**: Registro y Login con base de datos `cuentas.json`.
-- **Motor de Juego**: Filtrado de preguntas por temática/dificultad y sistema de puntuación dinámica.
+- **UI Paramétrica Modular**: Interfaz dependiente de archivos JSON especializados (`estilo.json`, `layout.json`, `sonidos.json`).
+- **Limpieza de Código**: Eliminación de `enumerate`, refactoreo de retornos y documentación técnica profesional.
+- **Lógica de Partida Realista**: Ahora las temáticas son aisladas y no se rellenan con preguntas de otros temas.
 
 ## 🎯 Plan de Trabajo Próximo
 Prioridades para las siguientes sesiones:
 
-1.  **Modo TDAH (Configuración)**:
-    *   Habilitar/Deshabilitar el cronómetro.
-    *   Simplificar la UI del juego para reducir distracciones.
-2.  **Gestión de Récords**:
-    *   Actualizar el `puntaje_maximo` en `cuentas.json` al terminar cada partida.
-3.  **Pantalla de Ranking (Podio)**:
-    *   Mostrar los mejores puntajes globales cargados desde `cuentas.json`.
+1.  **Modo TDAH (Cierre)**:
+    *   Habilitar/Deshabilitar el cronómetro global.
+    *   Simplificar la UI del juego para reducir distracciones según la configuración.
 
 ---
-*Última actualización: Febrero 2026 - Fase: Multimedia y Control de Sonido finalizados.*
+*Última actualización: Febrero 2026 - Fase: Modularización Extrema y Refinamiento finalizados.*

@@ -1,0 +1,17 @@
+{
+    "musica": {
+        "escenas_menu": [
+            "login",
+            "registro",
+            "menu",
+            "seleccion",
+            "configuracion",
+            "ranking"
+        ],
+        "archivo_menu": "musica_menu.mp3",
+        "escenas_juego": [
+            "juego"
+        ],
+        "archivo_juego": "musica_juego.mp3"
+    }
+}

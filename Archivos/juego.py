@@ -124,7 +124,8 @@ def mostrar_pregunta(ventana, pregunta, dificultad, tematica, volumen_actual, AN
             (x_pos_columna_2, y_pos_segunda_fila)
         ]
         
-        for i, opcion in enumerate(pregunta["opciones"]):
+        for i in range(len(pregunta["opciones"])):
+            opcion = pregunta["opciones"][i]
             x_pos, y_pos = posiciones[i]
             boton = crear_boton_texto(opcion, fuente_opciones, COLORES["BLANCO"],
                                       COLORES["AZUL"], COLORES["AZUL_OSCURO"], COLORES["GRIS_CLARO"],

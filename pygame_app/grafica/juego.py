@@ -1,66 +1,33 @@
 import pygame
-import random
-from grafica.componentes import crear_boton, dibujar_boton, actualizar_boton, verificar_click_boton
+from grafica.componentes import (
+    crear_boton, dibujar_boton, actualizar_boton, verificar_click_boton, 
+    crear_input_box, manejar_evento_input, dibujar_input_box
+)
+from logica.sonido import procesar_eventos_volumen
+from logica.juego_logica import verificar_respuesta
 
-def inicializar_estado_juego(preguntas, config_juego, tematica, dificultad):
-    """
-    Prepara el estado inicial filtrado por temática y dificultad.
-    """
-    # 1. Definir puntaje por respuesta según dificultad elegida
-    puntos_por_acierto = 1
-    puntos_filtro_csv = 1 # El que buscamos en el CSV
-    
-    if dificultad == "pro":
-        puntos_por_acierto = 2
-        puntos_filtro_csv = 2
-    elif dificultad == "experto":
-        puntos_por_acierto = 5
-        puntos_filtro_csv = 3 # En el CSV el max es 3
+# Módulo para la visualización y gestión de eventos de la pantalla del juego.
 
-    # 2. Filtrar preguntas
-    preguntas_filtradas = []
-    for p in preguntas:
-        if p["categoria"].lower() == tematica.lower():
-            if p["puntos"] == puntos_filtro_csv:
-                preguntas_filtradas.append(p)
-    
-    if len(preguntas_filtradas) < 5:
-        for p in preguntas:
-            if p["categoria"].lower() == tematica.lower() and p not in preguntas_filtradas:
-                preguntas_filtradas.append(p)
-
-    random.shuffle(preguntas_filtradas)
-    cantidad = config_juego.get("cantidad_preguntas", 12)
-    lista_juego = preguntas_filtradas[:cantidad]
-
-    return {
-        "preguntas": lista_juego,
-        "indice_actual": 0,
-        "puntaje": 0,
-        "correctas": 0,
-        "finalizado": False,
-        "botones_opciones": [],
-        "dificultad": dificultad,
-        "puntos_acierto": puntos_por_acierto,
-        "pantalla_final": False
-    }
-
-def generar_botones_opciones(ancho_p, alto_p, opciones, fuentes, colores):
-    """
-    Crea los botones de opciones dinámicamente.
-    """
+def generar_botones_opciones(ancho_p, alto_p, opciones, fuentes, colores, config_layout):
+    """Genera dinámicamente los botones de opciones de respuesta según el layout."""
     botones = []
-    ancho_btn = 600
-    alto_btn = 70
+    l_opt = config_layout["opciones"]
+    ancho_btn = l_opt["ancho"]
+    alto_btn = l_opt["alto"]
     x_centro = ancho_p // 2
-    y_inicio = 350
+    y_inicio = int(alto_p * l_opt["y_inicio_rel"])
     
     for i in range(len(opciones)):
-        col = i % 2
-        fila = i // 2
+        col = i % 2     
+        fila = i // 2   
         
-        x = x_centro - ancho_btn - 20 if col == 0 else x_centro + 20
-        y = y_inicio + (fila * (alto_btn + 20))
+        mitad_ancho_total = ancho_btn + (l_opt["separacion_x"] // 2)
+        if col == 0:
+            x = x_centro - mitad_ancho_total
+        else:
+            x = x_centro + (l_opt["separacion_x"] // 2)
+
+        y = y_inicio + (fila * (alto_btn + l_opt["separacion_y"]))
         
         btn = crear_boton(
             x = x,
@@ -79,7 +46,7 @@ def generar_botones_opciones(ancho_p, alto_p, opciones, fuentes, colores):
     return botones
 
 def generar_botones_vol_juego(ancho_p, alto_p, d_vol, colores, fuente):
-    """Genera los botones de volumen para la pantalla de juego."""
+    """Crea los botones de control de volumen para la pantalla de juego."""
     btn_mas = crear_boton(
         int((ancho_p * d_vol["boton_mas"]["x_relativo"]) - (d_vol["boton_mas"]["ancho"] // 2)),
         int((alto_p * d_vol["boton_mas"]["y_relativo"]) - (d_vol["boton_mas"]["alto"] // 2)),
@@ -100,22 +67,19 @@ def generar_botones_vol_juego(ancho_p, alto_p, d_vol, colores, fuente):
     )
     return {"vol_mas": btn_mas, "vol_menos": btn_menos, "mute": btn_mute}
 
-def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, pos_mouse, eventos, botones_vol, estado_vol):
-    """Dibuja y gestiona la lógica de la pantalla de juego."""
+def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, pos_mouse, eventos, botones_vol, estado_vol, config_layout):
+    """Dibuja todos los elementos de la interfaz de juego y gestiona clics e inputs."""
     ancho_p = pantalla.get_width()
     alto_p = pantalla.get_height()
     
-    # 1. Fondo
     fondo_juego = recursos["fondos"]["juego"]
     pantalla.blit(fondo_juego, (0, 0))
 
-    # --- CONTROLES DE VOLUMEN ---
     for clave in botones_vol:
         actualizar_boton(botones_vol[clave], pos_mouse)
         dibujar_boton(pantalla, botones_vol[clave])
 
-    # --- PANTALLA DE FEEDBACK FINAL ---
-    if estado_juego["pantalla_final"]:
+    if estado_juego["pantalla_final"] == True:
         sup_titulo = fuentes["titulo"].render("¡FIN DE LA PARTIDA!", True, colores["amarillo"])
         rect_titulo = sup_titulo.get_rect(center=(ancho_p // 2, 150))
         pantalla.blit(sup_titulo, rect_titulo)
@@ -134,24 +98,11 @@ def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, p
         dibujar_boton(pantalla, btn_volver)
 
         for evento in eventos:
-            if verificar_click_boton(btn_volver, evento):
-                return "menu"
-            
-            # Click en volumen (en pantalla final también)
-            if verificar_click_boton(botones_vol["vol_mas"], evento):
-                estado_vol["nivel"] = min(1.0, estado_vol["nivel"] + 0.1)
-                estado_vol["mute"] = False
-                pygame.mixer.music.set_volume(estado_vol["nivel"])
-            if verificar_click_boton(botones_vol["vol_menos"], evento):
-                estado_vol["nivel"] = max(0.0, estado_vol["nivel"] - 0.1)
-                estado_vol["mute"] = False
-                pygame.mixer.music.set_volume(estado_vol["nivel"])
-            if verificar_click_boton(botones_vol["mute"], evento):
-                estado_vol["mute"] = not estado_vol["mute"]
-                pygame.mixer.music.set_volume(0.0 if estado_vol["mute"] else estado_vol["nivel"])
+            if verificar_click_boton(btn_volver, evento) == True:
+                return "podio"
+            procesar_eventos_volumen(evento, botones_vol, estado_vol)
         return None
 
-    # --- LÓGICA DE PREGUNTAS ---
     if estado_juego["indice_actual"] >= len(estado_juego["preguntas"]):
         estado_juego["pantalla_final"] = True
         return None
@@ -159,47 +110,56 @@ def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, p
     pregunta_actual = estado_juego["preguntas"][estado_juego["indice_actual"]]
     
     sup_enunciado = fuentes["subtitulo"].render(pregunta_actual["enunciado"], True, colores["blanco"])
-    rect_enunciado = sup_enunciado.get_rect(center=(ancho_p // 2, 200))
+    y_enunciado = int(alto_p * config_layout["enunciado_y_rel"])
+    rect_enunciado = sup_enunciado.get_rect(center=(ancho_p // 2, y_enunciado))
     pantalla.blit(sup_enunciado, rect_enunciado)
 
-    if not estado_juego["botones_opciones"]:
-        estado_juego["botones_opciones"] = generar_botones_opciones(ancho_p, alto_p, pregunta_actual["opciones"], fuentes, colores)
+    if estado_juego["dificultad"] == "experto":
+        if estado_juego["input_box"] == None:
+            l_input = config_layout["input_experto"]
+            y_input = int(alto_p * l_input["y_rel"])
+            estado_juego["input_box"] = crear_input_box(
+                ancho_p // 2 - (l_input["ancho"] // 2), y_input, l_input["ancho"], l_input["alto"], 
+                fuentes["cuerpo"], colores["celeste"], colores["blanco"]
+            )
+            estado_juego["input_box"]["activo"] = True 
+            estado_juego["input_box"]["color_actual"] = colores["celeste"]
+        
+        dibujar_input_box(pantalla, estado_juego["input_box"])
+        
+        l_input = config_layout["input_experto"]
+        y_instr = int(alto_p * l_input["y_instruccion_rel"])
+        sup_instruccion = fuentes["info"].render("Escribe tu respuesta y presiona ENTER", True, colores["celeste"])
+        pantalla.blit(sup_instruccion, sup_instruccion.get_rect(center=(ancho_p // 2, y_instr)))
+    else:
+        if len(estado_juego["botones_opciones"]) == 0:
+            estado_juego["botones_opciones"] = generar_botones_opciones(ancho_p, alto_p, pregunta_actual["opciones"], fuentes, colores, config_layout)
 
-    for btn in estado_juego["botones_opciones"]:
-        actualizar_boton(btn, pos_mouse)
-        dibujar_boton(pantalla, btn)
+        for btn in estado_juego["botones_opciones"]:
+            actualizar_boton(btn, pos_mouse)
+            dibujar_boton(pantalla, btn)
 
-    # UI Superior
     texto_puntos = f"Puntaje: {estado_juego['puntaje']}"
     sup_puntos = fuentes["info"].render(texto_puntos, True, colores["amarillo"])
-    pantalla.blit(sup_puntos, (50, 100))
+    pos_pts = config_layout["puntaje_pos"]
+    pantalla.blit(sup_puntos, (pos_pts[0], pos_pts[1]))
 
     for evento in eventos:
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_ESCAPE:
                 return "menu"
         
-        # Click volumen
-        if verificar_click_boton(botones_vol["vol_mas"], evento):
-            estado_vol["nivel"] = min(1.0, estado_vol["nivel"] + 0.1)
-            estado_vol["mute"] = False
-            pygame.mixer.music.set_volume(estado_vol["nivel"])
-        if verificar_click_boton(botones_vol["vol_menos"], evento):
-            estado_vol["nivel"] = max(0.0, estado_vol["nivel"] - 0.1)
-            estado_vol["mute"] = False
-            pygame.mixer.music.set_volume(estado_vol["nivel"])
-        if verificar_click_boton(botones_vol["mute"], evento):
-            estado_vol["mute"] = not estado_vol["mute"]
-            pygame.mixer.music.set_volume(0.0 if estado_vol["mute"] else estado_vol["nivel"])
+        procesar_eventos_volumen(evento, botones_vol, estado_vol)
 
-        # Click en opciones
-        for i in range(len(estado_juego["botones_opciones"])):
-            btn = estado_juego["botones_opciones"][i]
-            if verificar_click_boton(btn, evento):
-                if pregunta_actual["opciones"][i] == pregunta_actual["respuesta_correcta"]:
-                    estado_juego["puntaje"] += estado_juego["puntos_acierto"]
-                    estado_juego["correctas"] += 1
-                estado_juego["indice_actual"] += 1
-                estado_juego["botones_opciones"] = [] 
+        if estado_juego["dificultad"] == "experto":
+            texto_ingresado = manejar_evento_input(estado_juego["input_box"], evento)
+            if texto_ingresado != None: 
+                verificar_respuesta(estado_juego, texto_ingresado, pregunta_actual["respuesta_correcta"])
                 return None
+        else:
+            for i in range(len(estado_juego["botones_opciones"])):
+                btn = estado_juego["botones_opciones"][i]
+                if verificar_click_boton(btn, evento) == True:
+                    verificar_respuesta(estado_juego, pregunta_actual["opciones"][i], pregunta_actual["respuesta_correcta"])
+                    return None
     return None

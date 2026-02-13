@@ -1,32 +1,28 @@
 import pygame
 import os
 
-# CONFIGURACIÓN DE RUTAS
+# Módulo para la carga y gestión de activos multimedia (imágenes, fuentes y música).
+
 RUTA_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 RUTA_ASSETS = os.path.join(RUTA_BASE, "assets")
-RUTA_SOUNDS = os.path.join(RUTA_BASE, "assets") # Ahora la música también está en assets
+RUTA_SOUNDS = os.path.join(RUTA_BASE, "assets")
 
 def cargar_imagen(nombre_archivo, size=(100, 100)):
-    """
-    Carga una imagen y la devuelve escalada. Si el archivo no existe, devuelve una superficie sólida.
-    """
+    """Carga una imagen desde el disco y la escala a las dimensiones proporcionadas."""
     ruta = os.path.join(RUTA_ASSETS, nombre_archivo)
     
     if os.path.exists(ruta) == True:
         imagen = pygame.image.load(ruta)
-        # Escalamos la imagen al tamaño solicitado
         imagen = pygame.transform.scale(imagen, size)
     else:
-        print(f"Advertencia: No se encontró {nombre_archivo}. Usando placeholder.")
+        print(f"Advertencia: No se encontró {nombre_archivo}. Utilizando superficie vacía.")
         imagen = pygame.Surface(size)
         imagen.fill((50, 50, 50))
     
     return imagen
 
 def cargar_recursos_graficos(config_ventana):
-    """
-    Centraliza la carga de todas las imágenes del juego usando las dimensiones del JSON.
-    """
+    """Carga todos los fondos y elementos gráficos necesarios para el juego."""
     ancho = config_ventana["ancho"]
     alto = config_ventana["alto"]
     
@@ -40,9 +36,7 @@ def cargar_recursos_graficos(config_ventana):
     return recursos
 
 def cargar_fuentes(config_fuentes):
-    """
-    Carga las fuentes tipográficas usando los tamaños definidos en el JSON.
-    """
+    """Inicializa los objetos de fuente de Pygame con los tamaños configurados."""
     fuentes = {
         "titulo": pygame.font.Font(None, config_fuentes["titulo"]),
         "subtitulo": pygame.font.Font(None, config_fuentes["subtitulo"]),
@@ -52,9 +46,7 @@ def cargar_fuentes(config_fuentes):
     return fuentes
 
 def gestionar_musica(nombre_archivo, volumen=0.5):
-    """
-    Maneja el streaming de música de fondo.
-    """
+    """Carga y reproduce música de fondo en bucle."""
     ruta = os.path.join(RUTA_SOUNDS, nombre_archivo)
     if os.path.exists(ruta) == True:
         pygame.mixer.music.load(ruta)

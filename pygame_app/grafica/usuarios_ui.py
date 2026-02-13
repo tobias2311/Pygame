@@ -42,6 +42,10 @@ def mostrar_pantalla_login(pantalla, recursos, fuentes, colores, ui, pos_mouse, 
     """Dibuja y gestiona la pantalla de login."""
     ancho_p = pantalla.get_width()
     
+    # Variables de estado para el retorno (lo que el main necesita saber)
+    pantalla_destino = None
+    usuario_identificado = None
+
     # 1. Fondo (Color sólido para login)
     pantalla.fill(colores["azul_oscuro"])
     
@@ -50,12 +54,10 @@ def mostrar_pantalla_login(pantalla, recursos, fuentes, colores, ui, pos_mouse, 
     pantalla.blit(sup_titulo, sup_titulo.get_rect(center=(ancho_p // 2, 150)))
     
     # 3. Etiquetas e Inputs
-    # Usuario
     lbl_user = fuentes["info"].render("Usuario:", True, colores["amarillo"])
     pantalla.blit(lbl_user, (ancho_p // 2 - 150, 270))
     dibujar_input_box(pantalla, ui["user"])
     
-    # Password
     lbl_pass = fuentes["info"].render("Contraseña:", True, colores["amarillo"])
     pantalla.blit(lbl_pass, (ancho_p // 2 - 150, 370))
     dibujar_input_box(pantalla, ui["pass"])
@@ -71,24 +73,31 @@ def mostrar_pantalla_login(pantalla, recursos, fuentes, colores, ui, pos_mouse, 
         manejar_evento_input(ui["user"], evento)
         manejar_evento_input(ui["pass"], evento)
         
+        # Click en "No tengo cuenta" -> Ir a Registro
         if verificar_click_boton(ui["btn_switch"], evento):
-            return "registro", None
+            pantalla_destino = "registro"
             
+        # Click en "Ingresar" -> Autenticar
         if verificar_click_boton(ui["btn_ok"], evento):
             nombre = ui["user"]["texto"]
             clave = ui["pass"]["texto"]
             exito, datos_u = autenticar_usuario(nombre, clave)
-            if exito:
-                return "menu", datos_u
+            
+            if exito == True:
+                pantalla_destino = "menu"
+                usuario_identificado = datos_u
             else:
                 print("Error: Usuario o contraseña incorrectos")
                 
-    return None, None
+    return pantalla_destino, usuario_identificado
 
 def mostrar_pantalla_registro(pantalla, recursos, fuentes, colores, ui, pos_mouse, eventos):
     """Dibuja y gestiona la pantalla de registro."""
     ancho_p = pantalla.get_width()
     
+    # Variable de estado para el retorno
+    pantalla_destino = None
+
     # 1. Fondo (Color sólido para registro)
     pantalla.fill(colores["azul_oscuro"])
     
@@ -116,15 +125,17 @@ def mostrar_pantalla_registro(pantalla, recursos, fuentes, colores, ui, pos_mous
         manejar_evento_input(ui["user"], evento)
         manejar_evento_input(ui["pass"], evento)
         
+        # Click en "Volver al Login"
         if verificar_click_boton(ui["btn_switch"], evento):
-            return "login"
+            pantalla_destino = "login"
             
+        # Click en "Registrarme"
         if verificar_click_boton(ui["btn_ok"], evento):
             nombre = ui["user"]["texto"]
             clave = ui["pass"]["texto"]
             exito, mensaje = registrar_usuario(nombre, clave)
             print(mensaje)
-            if exito:
-                return "login"
+            if exito == True:
+                pantalla_destino = "login"
                 
-    return None
+    return pantalla_destino

@@ -3,7 +3,12 @@
         {
             "nombre": "tobi",
             "password": "123",
-            "puntaje_maximo": 0
+            "puntaje_maximo": 55
+        },
+        {
+            "nombre": "ttt",
+            "password": "123",
+            "puntaje_maximo": 22
         }
     ]
 }
