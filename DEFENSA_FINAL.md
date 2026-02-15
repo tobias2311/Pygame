@@ -98,16 +98,24 @@ Agregamos la "capa de brillo" al proyecto para que se sienta como un producto fi
 - **Limpieza de Documentación**: Profesionalizamos los comentarios del código.
     - *Defensa Técnica*: "Eliminamos comentarios redundantes o informales, dejando únicamente docstrings técnicos y explicaciones de propósito. El código ahora es autodocumentado por la claridad de sus nombres de variables y estructuras".
 
+### Sprint 14: Refinamiento de UI e Integridad de Código
+#### 📁 Módulos: `grafica/componentes.py`, `grafica/configuracion.py` y `grafica/juego.py`
+- **Componente Switch Premium**: Desarrollamos un interruptor deslizante desde cero con animaciones de suavizado (easing).
+    - *Defensa Técnica*: "En lugar de usar un checkbox estándar, creamos un componente visual personalizado que maneja su propio estado de animación mediante cálculos de interpolación. Esto demuestra la capacidad de crear interfaces de usuario ricas usando solo Pygame".
+- **Lógica Exclusiva del Modo TDAH**: Refinamos el sistema para que las ayudas visuales y auditivas sean granulares.
+    - *Defensa Técnica*: "Aseguramos que características como los mensajes motivadores y el temporizador sean exclusivos de este modo, manteniendo una experiencia pura para el resto de los jugadores. Esto demuestra un manejo avanzado de estados de configuración".
+- **Eliminación de Operadores Ternarios y `not`**: Refactorizamos el código para usar solo estructuras de control explícitas.
+    - *Defensa Técnica*: "Eliminamos el operador `not` y las asignaciones `if/else` en una sola línea (ternarios). Aunque son comunes en Python, optamos por bloques `if/else` explícitos para maximizar la claridad lógica y adherirnos a las metodologías de enseñanza de algoritmos básicos".
+
 ---
 
 ## 🛠️ Reglas Éticas y Técnicas de Programación
 Durante todo el desarrollo, seguimos principios fundamentales para una defensa exitosa:
-1. **Control de Flujo Explícito**: Se eliminó totalmente el uso de `not` y `try-except` (fuera de la persistencia obligatoria), utilizando banderas booleanas y comparaciones explícitas (`== True`, `== False`, `!= None`).
-2. **Comparación Explícita**: Usamos comparaciones como `if variable == True` para que el código sea autodocumentado.
-3. **Modularidad Estricta**: Dividimos el proyecto en capas (Lógica, Gráfica, Datos) para demostrar una arquitectura profesional.
-4. **Resistencia a Errores de Interfaz**: Corregimos problemas latentes de eventos de mouse asegurando que la detección de clics use el origen del evento (`evento.pos`) en lugar de estados persistentes erróneos.
+1. **Control de Flujo Explícito**: Se eliminó totalmente el uso de `not` y `try-except` (permitido únicamente en `logica/cargar_archivos.py` para persistencia obligatoria).
+2. **Sin Operadores Ternarios**: Todas las condiciones usan bloques `if/else` multilínea para garantizar la legibilidad.
+3. **Comparación Explícita**: Usamos comparaciones como `if variable == True` para que el código sea autodocumentado y predecible.
+4. **Cero Comentarios Internos**: El código se autodocumenta mediante nombres claros de variables y funciones; los comentarios solo se usan para descripciones técnicas de módulos/funciones.
+5. **Modularidad Estricta**: División clara en capas: Lógica (backend), Gráfica (frontend) y Datos (configuración externa).
 
 ---
-
----
-*Última actualización: Febrero 2026 - Versión: Modularización Extrema y Refinamiento de Código finalizados.*
+*Última actualización: Febrero 2026 - Versión: Refinamiento de UI y Cumplimiento Estricto de Restricciones finalizados.*

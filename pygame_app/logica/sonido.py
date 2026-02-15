@@ -1,6 +1,6 @@
 import pygame
 
-# Módulo encargado de la gestión de volumen y procesamiento de eventos sonoros.
+"""Módulo encargado de la gestión de volumen y procesamiento de eventos sonoros."""
 
 def actualizar_volumen_global(estado_vol):
     """Establece el volumen del mezclador de Pygame según el estado mute y el nivel actual."""

@@ -1,7 +1,7 @@
 import pygame
 import os
 
-# Módulo para la carga y gestión de activos multimedia (imágenes, fuentes y música).
+"""Módulo para la carga y gestión de activos multimedia (imágenes, fuentes y música)."""
 
 RUTA_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 RUTA_ASSETS = os.path.join(RUTA_BASE, "assets")
@@ -15,7 +15,6 @@ def cargar_imagen(nombre_archivo, size=(100, 100)):
         imagen = pygame.image.load(ruta)
         imagen = pygame.transform.scale(imagen, size)
     else:
-        print(f"Advertencia: No se encontró {nombre_archivo}. Utilizando superficie vacía.")
         imagen = pygame.Surface(size)
         imagen.fill((50, 50, 50))
     
@@ -52,3 +51,22 @@ def gestionar_musica(nombre_archivo, volumen=0.5):
         pygame.mixer.music.load(ruta)
         pygame.mixer.music.set_volume(volumen)
         pygame.mixer.music.play(-1)
+
+def actualizar_musica_pantalla(pantalla_actual, musica_actual, configuracion_musica):
+    """Determina si debe cambiar la música según la pantalla y devuelve el nuevo identificador."""
+    nueva_musica = musica_actual
+    
+    es_menu = (pantalla_actual == "login" or pantalla_actual == "registro" or 
+               pantalla_actual == "menu" or pantalla_actual == "seleccion" or 
+               pantalla_actual == "configuracion" or pantalla_actual == "ranking")
+               
+    if es_menu == True:
+        if musica_actual != "menu":
+            gestionar_musica(configuracion_musica["archivo_menu"], volumen=pygame.mixer.music.get_volume())
+            nueva_musica = "menu"
+    elif pantalla_actual == "juego":
+        if musica_actual != "juego":
+            gestionar_musica(configuracion_musica["archivo_juego"], volumen=pygame.mixer.music.get_volume())
+            nueva_musica = "juego"
+            
+    return nueva_musica

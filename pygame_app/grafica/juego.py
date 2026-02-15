@@ -6,7 +6,7 @@ from grafica.componentes import (
 from logica.sonido import procesar_eventos_volumen
 from logica.juego_logica import verificar_respuesta
 
-# Módulo para la visualización y gestión de eventos de la pantalla del juego.
+"""Módulo para la visualización y gestión de eventos de la pantalla del juego."""
 
 def generar_botones_opciones(ancho_p, alto_p, opciones, fuentes, colores, config_layout):
     """Genera dinámicamente los botones de opciones de respuesta según el layout."""
@@ -67,41 +67,65 @@ def generar_botones_vol_juego(ancho_p, alto_p, d_vol, colores, fuente):
     )
     return {"vol_mas": btn_mas, "vol_menos": btn_menos, "mute": btn_mute}
 
-def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, pos_mouse, eventos, botones_vol, estado_vol, config_layout):
-    """Dibuja todos los elementos de la interfaz de juego y gestiona clics e inputs."""
-    ancho_p = pantalla.get_width()
-    alto_p = pantalla.get_height()
-    
-    fondo_juego = recursos["fondos"]["juego"]
-    pantalla.blit(fondo_juego, (0, 0))
+def dibujar_interfaz_base(pantalla, recursos, colores, tdah_activo, botones_vol, pos_mouse):
+    """Limpia la pantalla y dibuja elementos comunes como fondo y botones de volumen."""
+    pantalla.fill(colores["negro"])
+    pantalla.blit(recursos["fondos"]["juego"], (0, 0))
 
     for clave in botones_vol:
         actualizar_boton(botones_vol[clave], pos_mouse)
         dibujar_boton(pantalla, botones_vol[clave])
 
+def dibujar_mensaje_racha(pantalla, estado_juego, fuentes, colores, ancho_p):
+    """Muestra el mensaje motivador si está activo y descuenta su timer."""
+    if estado_juego.get("mensaje_racha", "") != "" and estado_juego.get("timer_mensaje", 0) > 0:
+        color_msg = colores["magenta"]
+        sup_racha = fuentes["subtitulo"].render(estado_juego["mensaje_racha"], True, color_msg)
+        rect_racha = sup_racha.get_rect(center=(ancho_p // 2, 70))
+        
+        pygame.draw.rect(pantalla, colores["negro"], rect_racha.inflate(30, 20), border_radius=15)
+        pygame.draw.rect(pantalla, color_msg, rect_racha.inflate(30, 20), width=3, border_radius=15)
+        
+        pantalla.blit(sup_racha, rect_racha)
+        estado_juego["timer_mensaje"] -= 1
+
+def dibujar_pantalla_final(pantalla, estado_juego, fuentes, colores, ancho_p, alto_p, pos_mouse, eventos, botones_vol, estado_vol):
+    """Dibuja el resumen de la partida y el botón de volver."""
+    sup_titulo = fuentes["titulo"].render("¡FIN DE LA PARTIDA!", True, colores["amarillo"])
+    rect_titulo = sup_titulo.get_rect(center=(ancho_p // 2, 150))
+    pantalla.blit(sup_titulo, rect_titulo)
+
+    txt_puntos = f"Puntaje Total: {estado_juego['puntaje']}"
+    txt_resumen = f"Respondiste bien {estado_juego['correctas']} de {len(estado_juego['preguntas'])} preguntas"
+    
+    sup_puntos = fuentes["subtitulo"].render(txt_puntos, True, colores["blanco"])
+    sup_resumen = fuentes["cuerpo"].render(txt_resumen, True, colores["celeste"])
+    
+    pantalla.blit(sup_puntos, sup_puntos.get_rect(center=(ancho_p // 2, 300)))
+    pantalla.blit(sup_resumen, sup_resumen.get_rect(center=(ancho_p // 2, 400)))
+
+    btn_volver = crear_boton(ancho_p//2 - 150, 550, 300, 80, "VOLVER AL MENÚ", fuentes["cuerpo"], colores["azul_oscuro"], colores["celeste"])
+    actualizar_boton(btn_volver, pos_mouse)
+    dibujar_boton(pantalla, btn_volver)
+
+    for evento in eventos:
+        if verificar_click_boton(btn_volver, evento) == True:
+            return "podio"
+        procesar_eventos_volumen(evento, botones_vol, estado_vol)
+    return None
+
+def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, pos_mouse, eventos, botones_vol, estado_vol, config_layout):
+    """Dibuja todos los elementos de la interfaz de juego y gestiona clics e inputs."""
+    ancho_p = pantalla.get_width()
+    alto_p = pantalla.get_height()
+    
+    dibujar_interfaz_base(pantalla, recursos, colores, estado_juego.get("tdah_activo", False), botones_vol, pos_mouse)
+    
+    if estado_juego.get("tdah_activo", False) == True:
+        dibujar_mensaje_racha(pantalla, estado_juego, fuentes, colores, ancho_p)
+
     if estado_juego["pantalla_final"] == True:
-        sup_titulo = fuentes["titulo"].render("¡FIN DE LA PARTIDA!", True, colores["amarillo"])
-        rect_titulo = sup_titulo.get_rect(center=(ancho_p // 2, 150))
-        pantalla.blit(sup_titulo, rect_titulo)
-
-        txt_puntos = f"Puntaje Total: {estado_juego['puntaje']}"
-        txt_resumen = f"Respondiste bien {estado_juego['correctas']} de {len(estado_juego['preguntas'])} preguntas"
-        
-        sup_puntos = fuentes["subtitulo"].render(txt_puntos, True, colores["blanco"])
-        sup_resumen = fuentes["cuerpo"].render(txt_resumen, True, colores["celeste"])
-        
-        pantalla.blit(sup_puntos, sup_puntos.get_rect(center=(ancho_p // 2, 300)))
-        pantalla.blit(sup_resumen, sup_resumen.get_rect(center=(ancho_p // 2, 400)))
-
-        btn_volver = crear_boton(ancho_p//2 - 150, 550, 300, 80, "VOLVER AL MENÚ", fuentes["cuerpo"], colores["azul_oscuro"], colores["celeste"])
-        actualizar_boton(btn_volver, pos_mouse)
-        dibujar_boton(pantalla, btn_volver)
-
-        for evento in eventos:
-            if verificar_click_boton(btn_volver, evento) == True:
-                return "podio"
-            procesar_eventos_volumen(evento, botones_vol, estado_vol)
-        return None
+        return dibujar_pantalla_final(pantalla, estado_juego, fuentes, colores, ancho_p, alto_p, pos_mouse, eventos, botones_vol, estado_vol)
 
     if estado_juego["indice_actual"] >= len(estado_juego["preguntas"]):
         estado_juego["pantalla_final"] = True
@@ -139,6 +163,28 @@ def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, p
             actualizar_boton(btn, pos_mouse)
             dibujar_boton(pantalla, btn)
 
+    if estado_juego.get("tdah_activo", False) == True:
+        ahora = pygame.time.get_ticks()
+        if estado_juego["ultimo_tick"] == 0:
+            estado_juego["ultimo_tick"] = ahora
+        
+        diferencia = (ahora - estado_juego["ultimo_tick"]) / 1000
+        if diferencia >= 1:
+            estado_juego["tiempo_restante"] -= int(diferencia)
+            estado_juego["ultimo_tick"] = ahora
+            
+        if estado_juego["tiempo_restante"] <= 0:
+            estado_juego["tiempo_restante"] = 0
+            estado_juego["pantalla_final"] = True
+            
+        texto_tiempo = f"Tiempo: {estado_juego['tiempo_restante']}s"
+        color_tiempo = colores["blanco"]
+        if estado_juego["tiempo_restante"] < 10:
+            color_tiempo = colores["rojo"]
+            
+        sup_tiempo = fuentes["info"].render(texto_tiempo, True, color_tiempo)
+        pantalla.blit(sup_tiempo, (ancho_p - 200, 100))
+
     texto_puntos = f"Puntaje: {estado_juego['puntaje']}"
     sup_puntos = fuentes["info"].render(texto_puntos, True, colores["amarillo"])
     pos_pts = config_layout["puntaje_pos"]
@@ -162,4 +208,5 @@ def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, p
                 if verificar_click_boton(btn, evento) == True:
                     verificar_respuesta(estado_juego, pregunta_actual["opciones"][i], pregunta_actual["respuesta_correcta"])
                     return None
+    
     return None

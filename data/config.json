@@ -9,6 +9,7 @@
         "puntos_facil": 1,
         "puntos_pro": 2,
         "puntos_experto": 5,
-        "tiempo_partida_tdah": 60
+        "tiempo_partida_tdah": 60,
+        "estado_tdah": true
     }
 }

@@ -2,7 +2,7 @@ import csv
 import json
 import os
 
-# Módulo de funciones de utilidad para la lectura y escritura de archivos CSV y JSON.
+"""Módulo de funciones de utilidad para la lectura y escritura de archivos CSV y JSON."""
 
 def cargar_preguntas(ruta_archivo: str) -> list:
     """Lee el archivo CSV de preguntas y las convierte en una lista de diccionarios."""

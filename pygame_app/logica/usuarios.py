@@ -2,7 +2,7 @@ import os
 import json
 from logica.cargar_archivos import cargar_configuracion, guardar_datos_json
 
-# Módulo de gestión de cuentas de usuario, autenticación y ranking.
+"""Módulo de gestión de cuentas de usuario, autenticación y ranking."""
 
 def obtener_ruta_cuentas():
     """Retorna la ruta absoluta al archivo de datos de usuarios."""

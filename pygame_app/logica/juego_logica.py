@@ -1,6 +1,6 @@
 import random
 
-# Módulo encargado de la lógica de procesamiento de la partida.
+"""Módulo encargado de la lógica de procesamiento de la partida."""
 
 def inicializar_estado_juego(preguntas, config_juego, tematica, dificultad):
     """Genera el estado inicial de una partida filtrando preguntas por temática y dificultad."""
@@ -47,7 +47,15 @@ def inicializar_estado_juego(preguntas, config_juego, tematica, dificultad):
         "dificultad": dificultad,
         "puntos_acierto": puntos_por_acierto,
         "pantalla_final": False,
-        "input_box": None
+        "input_box": None,
+        "tdah_activo": config_juego.get("estado_tdah", False),
+        "tiempo_total": config_juego.get("tiempo_partida_tdah", 60),
+        "tiempo_restante": config_juego.get("tiempo_partida_tdah", 60),
+        "ultimo_tick": 0,
+        "racha_actual": 0,
+        "mensaje_racha": "",
+        "timer_mensaje": 0,
+        "mensajes_motivadores": []
     }
 
 def verificar_respuesta(estado_juego, respuesta_usuario, respuesta_correcta):
@@ -56,8 +64,18 @@ def verificar_respuesta(estado_juego, respuesta_usuario, respuesta_correcta):
     if respuesta_usuario.strip().lower() == respuesta_correcta.strip().lower():
         estado_juego["puntaje"] = estado_juego["puntaje"] + estado_juego["puntos_acierto"]
         estado_juego["correctas"] = estado_juego["correctas"] + 1
+        estado_juego["racha_actual"] = estado_juego["racha_actual"] + 1
         es_correcta = True
-    
+        
+        if estado_juego.get("tdah_activo", False) == True:
+            if estado_juego["racha_actual"] > 0 and estado_juego["racha_actual"] % 3 == 0:
+                indice_msg = random.randint(0, len(estado_juego["mensajes_motivadores"]) - 1)
+                estado_juego["mensaje_racha"] = estado_juego["mensajes_motivadores"][indice_msg]
+                estado_juego["timer_mensaje"] = 60 
+    else:
+        estado_juego["racha_actual"] = 0
+        estado_juego["mensaje_racha"] = ""
+        estado_juego["timer_mensaje"] = 0    
     estado_juego["indice_actual"] = estado_juego["indice_actual"] + 1
     estado_juego["botones_opciones"] = []
     estado_juego["input_box"] = None

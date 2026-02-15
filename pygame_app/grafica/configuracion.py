@@ -1,12 +1,37 @@
 import pygame
-from grafica.componentes import crear_boton, dibujar_boton, actualizar_boton, verificar_click_boton
+import os
+from grafica.componentes import (
+    crear_boton, dibujar_boton, actualizar_boton, verificar_click_boton,
+    crear_switch, dibujar_switch, actualizar_switch, verificar_click_switch
+)
+from logica.cargar_archivos import guardar_datos_json
 
-def generar_botones_config(ancho_p, alto_p, conf_ui_config, colores, fuente):
-    """
-    Crea los botones para la pantalla de configuración usando los datos del JSON.
-    """
+"""Módulo para la visualización y gestión de la pantalla de configuración."""
+
+def generar_botones_config(ancho_p, alto_p, conf_ui_config, colores, fuente, config_juego):
+    """Crea los botones y switch para la pantalla de configuración usando los datos del JSON."""
+    d_tdah = conf_ui_config["boton_tdah"]
+    estado_tdah = config_juego.get("estado_tdah", False)
     
-    # Solo queda el botón Volver (los de volumen se movieron al menú/juego)
+    colores_switch = {
+        "on": colores["verde"],
+        "off": colores["rojo"],
+        "handle": colores["blanco"],
+        "texto": colores["blanco"]
+    }
+    
+    switch_tdah = crear_switch(
+        x = int((ancho_p * d_tdah["x_relativo"]) - (120 // 2)), 
+        y = int((alto_p * d_tdah["y_relativo"]) - (50 // 2)),
+        ancho = 120,
+        alto = 50,
+        estado_inicial = estado_tdah,
+        fuente = fuente,
+        colores = colores_switch
+    )
+    
+    btn_tdah = switch_tdah
+    
     d_volver = conf_ui_config["boton_volver"]
     btn_volver = crear_boton(
         x = int((ancho_p * d_volver["x_relativo"]) - (d_volver["ancho"] // 2)),
@@ -22,38 +47,44 @@ def generar_botones_config(ancho_p, alto_p, conf_ui_config, colores, fuente):
     )
     
     return {
+        "tdah": btn_tdah,
         "volver": btn_volver
     }
 
-def mostrar_configuracion(pantalla, recursos, fuentes, colores, botones, pos_mouse, eventos):
-    """
-    Dibuja y gestiona la pantalla de configuración.
-    """
+def mostrar_configuracion(pantalla, recursos, fuentes, colores, botones, pos_mouse, eventos, config_completa, layout_config):
+    """Dibuja y gestiona la pantalla de configuración."""
     ancho_p = pantalla.get_width()
     
-    # 1. Fondo
     pantalla.blit(recursos["fondos"]["menu"], (0, 0))
     
-    # 2. Título
     sup_titulo = fuentes["titulo"].render("CONFIGURACIÓN", True, colores["blanco"])
     pantalla.blit(sup_titulo, sup_titulo.get_rect(center=(ancho_p // 2, 150)))
     
-    # 3. Mensaje Provisorio (Aquí irá el modo TDAH)
-    sup_msg = fuentes["subtitulo"].render("PRÓXIMAMENTE: MODO TDAH", True, colores["celeste"])
-    pantalla.blit(sup_msg, sup_msg.get_rect(center=(ancho_p // 2, 400)))
+    desc_tdah = "Activa el cronómetro y mensajes de motivación para mayor enfoque."
+    sup_desc = fuentes["info"].render(desc_tdah, True, colores["gris"])
+    pantalla.blit(sup_desc, sup_desc.get_rect(center=(ancho_p // 2, 530)))
     
-    # 4. Actualizar y Dibujar Botones
     for clave in botones:
-        actualizar_boton(botones[clave], pos_mouse)
-        dibujar_boton(pantalla, botones[clave])
+        if clave == "tdah":
+            actualizar_switch(botones[clave], pos_mouse)
+            dibujar_switch(pantalla, botones[clave])
+        else:
+            actualizar_boton(botones[clave], pos_mouse)
+            dibujar_boton(pantalla, botones[clave])
         
-    # 5. Manejo de Eventos
     for evento in eventos:
         if evento.type == pygame.KEYDOWN:
             if evento.key == pygame.K_ESCAPE:
                 return "menu"
         
-        # Click en Volver
+        if verificar_click_switch(botones["tdah"], evento):
+            nuevo_estado = botones["tdah"]["activo"]
+            config_completa["juego"]["estado_tdah"] = nuevo_estado
+            
+            ruta_base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            ruta_config = os.path.join(ruta_base, "data", "config.json")
+            guardar_datos_json(ruta_config, config_completa)
+            
         if verificar_click_boton(botones["volver"], evento):
             return "menu"
                 

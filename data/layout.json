@@ -81,6 +81,18 @@
         }
     },
     "configuracion": {
+        "boton_tdah": {
+            "texto_on": "MODO TDAH: ACTIVO",
+            "texto_off": "MODO TDAH: INACTIVO",
+            "ancho": 400,
+            "alto": 70,
+            "x_relativo": 0.5,
+            "y_relativo": 0.45,
+            "color_base": "azul_oscuro",
+            "color_hover": "celeste",
+            "color_texto": "blanco",
+            "radio_borde": 15
+        },
         "boton_volver": {
             "texto": "VOLVER",
             "ancho": 200,

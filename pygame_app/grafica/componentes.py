@@ -1,6 +1,6 @@
 import pygame
 
-# Módulo de creación y gestión de componentes genéricos de UI (Botones e Inputs).
+"""Módulo de creación y gestión de componentes genéricos de UI (Botones e Inputs)."""
 
 def crear_boton(x, y, ancho, alto, texto, fuente, color_base, color_hover, color_texto=(255, 255, 255), radio_borde=10):
     """Inicializa la estructura de datos para un botón."""
@@ -100,3 +100,89 @@ def dibujar_input_box(superficie, input_box):
     
     img_texto = input_box["fuente"].render(input_box["texto"], True, (0, 0, 0))
     superficie.blit(img_texto, (input_box["rect"].x + 10, input_box["rect"].y + (input_box["rect"].height - img_texto.get_height()) // 2))
+
+def crear_switch(x, y, ancho, alto, estado_inicial, fuente, colores):
+    """Inicializa la estructura de datos para un interruptor (switch) deslizante."""
+    radio_handle = (alto // 2) - 4
+    x_off = x + radio_handle + 4
+    x_on = x + ancho - radio_handle - 4
+    
+    x_inicio = x_off
+    if estado_inicial == True:
+        x_inicio = x_on
+    
+    switch = {
+        "rect": pygame.Rect(x, y, ancho, alto),
+        "activo": estado_inicial,
+        "x_actual": float(x_inicio),
+        "x_objetivo": float(x_inicio),
+        "x_off": float(x_off),
+        "x_on": float(x_on),
+        "y_centro": y + (alto // 2),
+        "radio_handle": radio_handle,
+        "fuente": fuente,
+        "colores": colores,
+        "hovered": False
+    }
+    return switch
+
+def actualizar_switch(switch, posicion_mouse):
+    """Actualiza la posición del handle (con suavizado) y el estado de hover."""
+    if switch["rect"].collidepoint(posicion_mouse):
+        switch["hovered"] = True
+    else:
+        switch["hovered"] = False
+    
+    distancia = switch["x_objetivo"] - switch["x_actual"]
+    if abs(distancia) > 0.1:
+        switch["x_actual"] += distancia * 0.2
+
+def dibujar_switch(superficie, switch):
+    """Dibuja el switch con estilo premium: fondo, track y handle deslizante."""
+    if switch["activo"] == True:
+        color_fondo = switch["colores"]["on"]
+        txt = "ON"
+    else:
+        color_fondo = switch["colores"]["off"]
+        txt = "OFF"
+    
+    sombra_rect = switch["rect"].copy()
+    sombra_rect.y += 2
+    pygame.draw.rect(superficie, (20, 20, 20), sombra_rect, border_radius=switch["rect"].height // 2)
+    
+    pygame.draw.rect(superficie, color_fondo, switch["rect"], border_radius=switch["rect"].height // 2)
+    pygame.draw.rect(superficie, (220, 220, 220), switch["rect"], width=2, border_radius=switch["rect"].height // 2)
+    
+    color_txt = (255, 255, 255)
+    img_txt = switch["fuente"].render(txt, True, color_txt)
+    
+    if switch["activo"] == True:
+        pos_txt = (switch["rect"].x + 15, switch["y_centro"] - img_txt.get_height() // 2)
+    else:
+        pos_txt = (switch["rect"].right - img_txt.get_width() - 15, switch["y_centro"] - img_txt.get_height() // 2)
+    
+    superficie.blit(img_txt, pos_txt)
+
+    color_handle = (255, 255, 255)
+    if switch["hovered"] == True:
+        pygame.draw.circle(superficie, (255, 255, 255, 100), (int(switch["x_actual"]), switch["y_centro"]), switch["radio_handle"] + 3)
+        
+    pygame.draw.circle(superficie, color_handle, (int(switch["x_actual"]), switch["y_centro"]), switch["radio_handle"])
+    pygame.draw.circle(superficie, (200, 200, 200), (int(switch["x_actual"]), switch["y_centro"]), switch["radio_handle"], width=1)
+
+def verificar_click_switch(switch, evento):
+    """Gestiona el clic para cambiar el estado del switch."""
+    if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
+        if switch["rect"].collidepoint(evento.pos):
+            if switch["activo"] == True:
+                switch["activo"] = False
+            else:
+                switch["activo"] = True
+            
+            if switch["activo"] == True:
+                switch["x_objetivo"] = switch["x_on"]
+            else:
+                switch["x_objetivo"] = switch["x_off"]
+                
+            return True
+    return False

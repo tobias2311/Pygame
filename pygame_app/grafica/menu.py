@@ -1,7 +1,7 @@
 from grafica.componentes import crear_boton, dibujar_boton, actualizar_boton, verificar_click_boton
 from logica.sonido import procesar_eventos_volumen
 
-# Módulo encargado de gestionar el menú principal y la navegación inicial.
+"""Módulo encargado de gestionar el menú principal y la navegación inicial."""
 
 def generar_botones_menu(ancho_p, alto_p, conf_menu, colores, fuente):
     """Crea y posiciona los botones del menú basándose en la configuración JSON."""

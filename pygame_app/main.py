@@ -2,7 +2,7 @@ import pygame
 import sys
 import os
 
-# Archivo principal que orquestra el juego y gestiona el cambio de pantallas.
+"""Archivo principal que orquestra el juego y gestiona el cambio de pantallas."""
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -35,7 +35,6 @@ def main():
 
     ruta_base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
-    # Carga de archivos JSON de configuración modularizada
     config = cargar_configuracion(os.path.join(ruta_base, "data", "config.json"))
     estilo = cargar_configuracion(os.path.join(ruta_base, "data", "estilo.json"))
     layout = cargar_configuracion(os.path.join(ruta_base, "data", "layout.json"))
@@ -62,11 +61,10 @@ def main():
     fuentes = cargar_fuentes(conf_fuentes)
     fuente_botones = fuentes["subtitulo"]
 
-    # Generación de elementos de UI para cada pantalla
     botones_menu = generar_botones_menu(ancho_p, alto_p, conf_menu, colores, fuente_botones)
     botones_seleccion = generar_botones_seleccion(ancho_p, alto_p, conf_ui_seleccion, fuentes, colores)
     ui_usuarios = inicializar_ui_usuarios(ancho_p, alto_p, fuentes, colores)
-    botones_config = generar_botones_config(ancho_p, alto_p, conf_ui_config, colores, fuente_botones)
+    botones_config = generar_botones_config(ancho_p, alto_p, conf_ui_config, colores, fuente_botones, config["juego"])
     botones_ranking = generar_botones_ranking(ancho_p, alto_p, conf_ui_ranking, colores, fuente_botones)
     botones_vol_juego = generar_botones_vol_juego(ancho_p, alto_p, conf_ui_juego["controles_volumen"], colores, fuentes["info"])
     
@@ -87,7 +85,6 @@ def main():
     
     corriendo = True
     
-    # Bucle de eventos y dibujado
     while corriendo == True:
         pos_mouse = pygame.mouse.get_pos()
         eventos = pygame.event.get()
@@ -96,20 +93,18 @@ def main():
             if evento.type == pygame.QUIT:
                 corriendo = False
 
-        # Gestión de música según la pantalla
-        cfg_m = sonidos_cfg["musica"]
-        if pantalla_actual in cfg_m["escenas_menu"]:
+        configuracion_musica = sonidos_cfg["musica"]
+        if pantalla_actual == "menu" or pantalla_actual == "seleccion" or pantalla_actual == "configuracion" or pantalla_actual == "ranking" or pantalla_actual == "login" or pantalla_actual == "registro":
             if musica_actual != "menu":
                 actualizar_volumen_global(control_volumen)
-                gestionar_musica(cfg_m["archivo_menu"], volumen=pygame.mixer.music.get_volume())
+                gestionar_musica(configuracion_musica["archivo_menu"], volumen=pygame.mixer.music.get_volume())
                 musica_actual = "menu"
-        elif pantalla_actual in cfg_m["escenas_juego"]:
+        elif pantalla_actual == "juego":
             if musica_actual != "juego":
                 actualizar_volumen_global(control_volumen)
-                gestionar_musica(cfg_m["archivo_juego"], volumen=pygame.mixer.music.get_volume())
+                gestionar_musica(configuracion_musica["archivo_juego"], volumen=pygame.mixer.music.get_volume())
                 musica_actual = "juego"
 
-        # Derivación a la lógica de cada pantalla
         if pantalla_actual == "login":
             prox, datos_u = mostrar_pantalla_login(pantalla, recursos, fuentes, colores, ui_usuarios["login"], pos_mouse, eventos)
             if prox == "menu":
@@ -141,7 +136,12 @@ def main():
             if resultado == "menu":
                 pantalla_actual = "menu"
             elif resultado == "iniciar_juego":
+                datos_mensajes = cargar_configuracion(os.path.join(ruta_base, "data", "mensajes.json"))
+                lista_motivadores = datos_mensajes["motivadores"]
+                
                 estado_juego = inicializar_estado_juego(preguntas_base, conf_juego, seleccion_partida["tematica"], seleccion_partida["dificultad"])
+                estado_juego["mensajes_motivadores"] = lista_motivadores
+                
                 pantalla_actual = "juego"
 
         elif pantalla_actual == "juego":
@@ -153,7 +153,7 @@ def main():
                 pantalla_actual = "menu"
 
         elif pantalla_actual == "configuracion":
-            prox = mostrar_configuracion(pantalla, recursos, fuentes, colores, botones_config, pos_mouse, eventos)
+            prox = mostrar_configuracion(pantalla, recursos, fuentes, colores, botones_config, pos_mouse, eventos, config, conf_ui_config)
             if prox == "menu":
                 pantalla_actual = "menu"
 
