@@ -1,0 +1,61 @@
+enunciado,opcion1,opcion2,opcion3,opcion4,respuesta_correcta,categoria,puntos
+el pais con mas habitantes del mundo es...,Estados Unidos,India,China,Brasil,India,Cultura general,2
+el planeta conocido como el planeta rojo es...,Venus,Marte,Jupiter,Saturno,Marte,Cultura general,1
+quien escribio Cien anos de soledad es...,Mario Vargas Llosa,Julio Cortazar,Gabriel Garcia Marquez,Isabel Allende,Gabriel Garcia Marquez,Cultura general,2
+el continente en el que esta Egipto es...,Asia,Africa,Europa,Oceania,Africa,Cultura general,1
+el rio mas largo del mundo es...,Amazonas,Nilo,Yangtse,Misisipi,Nilo,Cultura general,3
+el idioma mas hablado en el mundo por numero de hablantes nativos es...,Ingles,Hindi,Espanol,Chino mandarin,Chino mandarin,Cultura general,2
+el cientifico que desarrollo la teoria de la relatividad es...,Isaac Newton,Galileo Galilei,Albert Einstein,Nikola Tesla,Albert Einstein,Cultura general,1
+el instrumento que mide los movimientos sismicos es...,Barometro,Telurometro,Sismografo,Anemometro,Sismografo,Cultura general,3
+el oceano mas grande del planeta es...,Atlantico,Pacifico,Indico,Artico,Pacifico,Cultura general,2
+el pais en el que nacio el filosofo Socrates es...,Italia,Turquia,Grecia,Egipto,Grecia,Cultura general,2
+¿En qué país se originaron los Juegos Olímpicos?,Italia,Grecia,Egipto,Francia,Grecia,Cultura general,2
+¿Quién pintó “La última cena”?,Miguel Ángel,Rafael,Leonardo da Vinci,Caravaggio,Leonardo da Vinci,Cultura general,2
+¿En qué año llegó el hombre a la Luna?,1965,1969,1972,1959,1969,Cultura general,2
+¿Cuál es el país más grande del mundo en superficie?,Canadá,China,Rusia,Estados Unidos,Rusia,Cultura general,2
+¿Cuál es la capital de Japón?,Osaka,Kioto,Tokio,Hiroshima,Tokio,Cultura general,2
+¿Qué continente no tiene desiertos?,Europa,Oceanía,América,Asia,Europa,Cultura general,2
+¿Cuántos planetas tiene el sistema solar?,7,8,9,10,8,Cultura general,2
+¿Quién fue el primer presidente de los Estados Unidos?,Abraham Lincoln,George Washington,Thomas Jefferson,John Adams,George Washington,Cultura general,2
+¿En qué ciudad se encuentra la Torre Eiffel?,Londres,Madrid,París,Roma,París,Cultura general,2
+¿Cuál es la capital de Australia?,Sídney,Melbourne,Canberra,Brisbane,Canberra,Cultura general,2
+El futbol es la cosa mas importante...,para los hinchas,de las cosas menos importantes,en la vida,despues del amor,de las cosas menos importantes,Frases deportivas,3
+Un equipo es tan fuerte como...,su delantero estrella,su ultimo partido,su eslabon mas debil,su motivacion,su eslabon mas debil,Frases deportivas,3
+"""La presion no existe, es solo...""",mental,para los que no entrenan,fuerza externa,falta de preparacion,falta de preparacion,Frases deportivas,3
+"""No se gana por ser el mejor, sino por ser...""",constante,disciplinado,el que nunca se rinde,el mas inteligente,el que nunca se rinde,Frases deportivas,2
+Un campeon se entrena cuando...,todos descansan,hay motivacion,el cuerpo no da mas,es temporada,todos descansan,Frases deportivas,3
+La diferencia entre ganar y perder esta en...,el ultimo minuto,una decision,los detalles,el arbitro,los detalles,Frases deportivas,2
+El miedo a perder es...,el peor rival,necesario para competir,inevitable,fuerza motivadora,el peor rival,Frases deportivas,3
+"""El talento te da victorias, la actitud te da...""",constancia,campeonatos,respeto,disciplina,campeonatos,Frases deportivas,2
+"""Cuando estas cansado, ahi es cuando...""",hay que rendirse,empieza el entrenamiento,sos mas vulnerable,el cuerpo te protege,empieza el entrenamiento,Frases deportivas,3
+"""La gloria no se consigue en el estadio, sino en...""",el vestuario,la cancha,los entrenamientos,la mente,los entrenamientos,Frases deportivas,2
+La famosa frase 'Yo no salgo a empatar un partido' fue dicha por...,Carlos Bilardo,Diego Maradona,César Luis Menotti,Lionel Scaloni,Carlos Bilardo,Frases deportivas,2
+'El fútbol es la cosa más importante de las cosas menos importantes' es una frase de...,Arrigo Sacchi,Pep Guardiola,Johan Cruyff,José Mourinho,Arrigo Sacchi,Frases deportivas,2
+'La pelota no se mancha' fue una frase célebre de...,Pelé,Lionel Messi,Diego Maradona,Ronaldinho,Diego Maradona,Frases deportivas,3
+'Prefiero perder un partido por goleada y no por cobardía' fue dicho por...,Marcelo Bielsa,Pep Guardiola,Carlo Ancelotti,Luis Enrique,Marcelo Bielsa,Frases deportivas,2
+"""'Ganar no es lo más importante, es lo único' es una frase atribuida a...""",Zinedine Zidane,Vince Lombardi,Sir Alex Ferguson,Luis Aragonés,Vince Lombardi,Frases deportivas,2
+"""'Jugamos como nunca, perdimos como siempre' se usa comúnmente para referirse a...""",Brasil,Argentina,México,Colombia,México,Frases deportivas,1
+'El fútbol es un deporte que inventaron los ingleses y en el que siempre ganan los alemanes' fue dicha por...,Gary Lineker,David Beckham,Franz Beckenbauer,Bobby Charlton,Gary Lineker,Frases deportivas,3
+'No hay nada más lindo que la sonrisa de un hincha' fue dicha por...,Lionel Messi,Carlos Tévez,Paulo Dybala,Ángel Di María,Carlos Tévez,Frases deportivas,1
+'Con trabajo y humildad se logran grandes cosas' fue una frase repetida por...,Lionel Messi,Marcelo Gallardo,Lionel Scaloni,Javier Mascherano,Lionel Scaloni,Frases deportivas,2
+'El fútbol es dinámica de lo impensado' fue una frase de...,Víctor Hugo Morales,Osvaldo Zubeldía,Dante Panzeri,Ángel Labruna,Dante Panzeri,Frases deportivas,3
+Mas vale pajaro en mano que...,cien en la casa,dos volando,uno en el cielo,ninguno en el aire,dos volando,Frases populares,1
+El que madruga...,duerme mas,encuentra oro,Dios lo ayuda,trabaja doble,Dios lo ayuda,Frases populares,1
+A caballo regalado...,se le agradece,no se le ve el diente,no se le mira el precio,se le cuida,no se le ve el diente,Frases populares,1
+Mas vale tarde que...,nunca,siempre,temprano,mal,nunca,Frases populares,1
+En casa de herrero...,cuchillo de palo,martillo de oro,todo brilla,falta el fuego,cuchillo de palo,Frases populares,1
+Al mal tiempo...,buena cara,mejor quedarse,paraguas nuevo,no salir,buena cara,Frases populares,1
+Ojos que no ven...,corazon que se engana,mente que inventa,corazon que no siente,todo lo imagina,corazon que no siente,Frases populares,1
+No hay mal que por bien...,se esconda,te duela,venga,no venga,no venga,Frases populares,1
+Mas sabe el diablo por viejo que por...,sabio,malo,mentiroso,diablo,diablo,Frases populares,2
+Cria cuervos y te...,cantaran,alabaran,sacaran los ojos,abandonaran,sacaran los ojos,Frases populares,2
+'No por mucho madrugar...' se completa con...,se amanece más temprano,alcanza el éxito,sale el sol,se duerme mejor,amanece más temprano,Frases populares,1
+'Camarón que se duerme...' termina con...,pierde el rumbo,se lo come el tiburón,se lo lleva la corriente,no gana la marea,se lo lleva la corriente,Frases populares,1
+'A enemigo que huye...' se completa con...,puente de plata,ni agua,mala cara,espalda firme,puente de plata,Frases populares,2
+'El que ríe último...' se completa con...,ríe mejor,gana siempre,llora menos,pierde el miedo,ríe mejor,Frases populares,1
+'Haz bien y...' se completa con...,no mires a quién,Dios te ayudará,recibirás bien,serás feliz,no mires a quién,Frases populares,1
+'Cuando el río suena...' se completa con...,es porque piedras trae,es señal de tormenta,alguien se ahoga,corre el agua,es porque piedras trae,Frases populares,2
+'Dime con quién andas y...' se completa con...,te diré si te conviene,te evitaré,te juzgaré,te diré quién eres,te diré quién eres,Frases populares,2
+El que mucho abarca...,nada aprieta,todo lo consigue,se cansa,poco aprende,nada aprieta,Frases populares,2
+A palabras necias...,oídos sordos,respuestas sabias,paciencia,buen juicio,oídos sordos,Frases populares,2
+Perro que ladra...,no muerde,es molesto,llama la atención,anda suelto,no muerde,Frases populares,1

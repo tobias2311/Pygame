@@ -1,0 +1,15 @@
+{
+    "ventana": {
+        "ancho": 1400,
+        "alto": 800,
+        "titulo": "Desafío Mental"
+    },
+    "juego": {
+        "cantidad_preguntas": 12,
+        "puntos_facil": 1,
+        "puntos_pro": 2,
+        "puntos_experto": 5,
+        "tiempo_partida_tdah": 60,
+        "estado_tdah": true
+    }
+}

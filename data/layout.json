@@ -1,0 +1,211 @@
+{
+    "menu_principal": {
+        "boton_inicio": {
+            "texto": "COMENZAR JUEGO",
+            "ancho": 400,
+            "alto": 80,
+            "x_relativo": 0.5,
+            "y_relativo": 0.5,
+            "color_base": "azul_oscuro",
+            "color_hover": "celeste",
+            "color_texto": "blanco",
+            "radio_borde": 15
+        },
+        "boton_ranking": {
+            "texto": "VER RANKING",
+            "ancho": 400,
+            "alto": 80,
+            "x_relativo": 0.5,
+            "y_relativo": 0.65,
+            "color_base": "azul_oscuro",
+            "color_hover": "celeste",
+            "color_texto": "blanco",
+            "radio_borde": 15
+        },
+        "boton_config": {
+            "texto": "CONFIGURACIÓN",
+            "ancho": 400,
+            "alto": 80,
+            "x_relativo": 0.5,
+            "y_relativo": 0.77,
+            "color_base": "azul_oscuro",
+            "color_hover": "celeste",
+            "color_texto": "blanco",
+            "radio_borde": 15
+        },
+        "boton_salir": {
+            "texto": "SALIR",
+            "ancho": 400,
+            "alto": 80,
+            "x_relativo": 0.5,
+            "y_relativo": 0.89,
+            "color_base": "rojo",
+            "color_hover": "magenta",
+            "color_texto": "blanco",
+            "radio_borde": 15
+        },
+        "controles_volumen": {
+            "boton_mas": {
+                "texto": "+",
+                "ancho": 50,
+                "alto": 50,
+                "x_relativo": 0.95,
+                "y_relativo": 0.93,
+                "color_base": "azul_oscuro",
+                "color_hover": "celeste",
+                "color_texto": "blanco",
+                "radio_borde": 10
+            },
+            "boton_menos": {
+                "texto": "-",
+                "ancho": 50,
+                "alto": 50,
+                "x_relativo": 0.85,
+                "y_relativo": 0.93,
+                "color_base": "azul_oscuro",
+                "color_hover": "celeste",
+                "color_texto": "blanco",
+                "radio_borde": 10
+            },
+            "boton_mute": {
+                "texto": "MUTE",
+                "ancho": 80,
+                "alto": 50,
+                "x_relativo": 0.9,
+                "y_relativo": 0.93,
+                "color_base": "rojo",
+                "color_hover": "magenta",
+                "color_texto": "blanco",
+                "radio_borde": 10
+            }
+        }
+    },
+    "configuracion": {
+        "boton_tdah": {
+            "texto_on": "MODO TDAH: ACTIVO",
+            "texto_off": "MODO TDAH: INACTIVO",
+            "ancho": 400,
+            "alto": 70,
+            "x_relativo": 0.5,
+            "y_relativo": 0.45,
+            "color_base": "azul_oscuro",
+            "color_hover": "celeste",
+            "color_texto": "blanco",
+            "radio_borde": 15
+        },
+        "boton_volver": {
+            "texto": "VOLVER",
+            "ancho": 200,
+            "alto": 60,
+            "x_relativo": 0.5,
+            "y_relativo": 0.75,
+            "color_base": "gris",
+            "color_hover": "blanco",
+            "color_texto": "negro",
+            "radio_borde": 15
+        }
+    },
+    "juego_ui": {
+        "controles_volumen": {
+            "boton_mas": {
+                "texto": "+",
+                "ancho": 40,
+                "alto": 40,
+                "x_relativo": 0.08,
+                "y_relativo": 0.05,
+                "color_base": "azul_oscuro",
+                "color_hover": "celeste"
+            },
+            "boton_menos": {
+                "texto": "-",
+                "ancho": 40,
+                "alto": 40,
+                "x_relativo": 0.02,
+                "y_relativo": 0.05,
+                "color_base": "azul_oscuro",
+                "color_hover": "celeste"
+            },
+            "boton_mute": {
+                "texto": "M",
+                "ancho": 40,
+                "alto": 40,
+                "x_relativo": 0.05,
+                "y_relativo": 0.05,
+                "color_base": "rojo",
+                "color_hover": "magenta"
+            }
+        },
+        "layout": {
+            "enunciado_y_rel": 0.25,
+            "puntaje_pos": [
+                50,
+                100
+            ],
+            "opciones": {
+                "ancho": 600,
+                "alto": 70,
+                "y_inicio_rel": 0.45,
+                "separacion_x": 40,
+                "separacion_y": 20
+            },
+            "input_experto": {
+                "ancho": 600,
+                "alto": 60,
+                "y_rel": 0.5,
+                "y_instruccion_rel": 0.6
+            }
+        }
+    },
+    "seleccion": {
+        "tematicas": [
+            "Cultura general",
+            "Frases deportivas",
+            "Frases populares"
+        ],
+        "dificultades": [
+            {
+                "texto": "Fácil",
+                "valor": "facil"
+            },
+            {
+                "texto": "Pro",
+                "valor": "pro"
+            },
+            {
+                "texto": "Experto",
+                "valor": "experto"
+            }
+        ],
+        "layout": {
+            "ancho_btn": 350,
+            "alto_btn": 60,
+            "separacion_y": 80,
+            "y_inicio_rel": 0.45,
+            "x_temas_rel": 0.22,
+            "x_dif_rel": 0.54,
+            "boton_comenzar": {
+                "ancho": 300,
+                "alto": 80,
+                "x_rel": 0.5,
+                "y_rel": 0.82
+            }
+        }
+    },
+    "ranking": {
+        "titulo": "TOP 3 PUNTAJES",
+        "ancho_tabla": 800,
+        "alto_fila": 80,
+        "y_inicio_rel": 0.35,
+        "boton_volver": {
+            "texto": "VOLVER",
+            "ancho": 350,
+            "alto": 70,
+            "x_relativo": 0.5,
+            "y_relativo": 0.85,
+            "color_base": "gris",
+            "color_hover": "blanco",
+            "color_texto": "negro",
+            "radio_borde": 15
+        }
+    }
+}
