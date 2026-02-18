@@ -20,7 +20,18 @@ def inicializar_estado_juego(preguntas, config_juego, tematica, dificultad):
     
     cantidad_objetivo = config_juego.get("cantidad_preguntas", 12)
     
-   
+    if len(preguntas_filtradas) < cantidad_objetivo:
+        for p in preguntas:
+            if p["categoria"].lower() == tematica.lower():
+                existe = False
+                for pf in preguntas_filtradas:
+                    if pf["enunciado"] == p["enunciado"]:
+                        existe = True
+                        break
+                if existe == False:
+                    preguntas_filtradas.append(p)
+                    if len(preguntas_filtradas) >= cantidad_objetivo:
+                        break
 
     random.shuffle(preguntas_filtradas)
     lista_juego = preguntas_filtradas[:cantidad_objetivo]
