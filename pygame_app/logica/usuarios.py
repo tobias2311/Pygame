@@ -5,24 +5,20 @@ from logica.cargar_archivos import cargar_configuracion, guardar_datos_json
 """Módulo de gestión de cuentas de usuario, autenticación y ranking."""
 
 def obtener_ruta_cuentas():
-    """Retorna la ruta absoluta al archivo de datos de usuarios."""
     ruta_base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     return os.path.join(ruta_base, "data", "cuentas.json")
 
 def cargar_cuentas():
-    """Carga los usuarios registrados desde el archivo cuentas.json."""
     ruta = obtener_ruta_cuentas()
     datos = cargar_configuracion(ruta)
     return datos.get("usuarios", [])
 
 def guardar_cuentas(lista_usuarios):
-    """Guarda la lista de usuarios en el archivo de persistencia."""
     ruta = obtener_ruta_cuentas()
     datos = {"usuarios": lista_usuarios}
     return guardar_datos_json(ruta, datos)
 
 def registrar_usuario(nombre, password):
-    """Registra un nuevo usuario validando que el nombre no esté duplicado."""
     if len(nombre) < 3 or len(password) < 3:
         return False, "Nombre y clave deben tener al menos 3 caracteres."
     
@@ -44,7 +40,6 @@ def registrar_usuario(nombre, password):
     return False, "Error al guardar los datos."
 
 def autenticar_usuario(nombre, password):
-    """Valida las credenciales de un usuario para el inicio de sesión."""
     usuarios = cargar_cuentas()
     for u in usuarios:
         if u["nombre"].lower() == nombre.lower() and u["password"] == password:
@@ -52,7 +47,6 @@ def autenticar_usuario(nombre, password):
     return False, None
 
 def actualizar_puntaje_maximo(usuario_actual, puntaje_obtenido):
-    """Actualiza el récord histórico del usuario si el puntaje obtenido es mayor."""
     usuarios = cargar_cuentas()
     nuevo_record = False
     
@@ -70,7 +64,6 @@ def actualizar_puntaje_maximo(usuario_actual, puntaje_obtenido):
     return nuevo_record
 
 def obtener_ranking(cantidad=3):
-    """Retorna los N usuarios con mayor puntaje acumulado mediante ordenamiento burbuja."""
     usuarios = cargar_cuentas()
     
     n = len(usuarios)

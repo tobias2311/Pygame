@@ -5,7 +5,6 @@ from logica.usuarios import obtener_ranking
 """Módulo para la visualización de la pantalla de ranking con los mejores puntajes."""
 
 def generar_botones_ranking(ancho_p, alto_p, conf_ranking, colores, fuente):
-    """Crea los botones para la pantalla de ranking."""
     datos_volver = conf_ranking["boton_volver"]
     btn_volver = crear_boton(
         x = int((ancho_p * datos_volver["x_relativo"]) - (datos_volver["ancho"] // 2)),
@@ -22,7 +21,6 @@ def generar_botones_ranking(ancho_p, alto_p, conf_ranking, colores, fuente):
     return {"volver": btn_volver}
 
 def mostrar_ranking(pantalla, recursos, fuentes, colores, botones, pos_mouse, eventos, conf_ranking):
-    """Dibuja la pantalla de ranking con los mejores puntajes."""
     fondo = recursos["fondos"]["menu"]
     pantalla.blit(fondo, (0, 0))
     

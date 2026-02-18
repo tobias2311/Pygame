@@ -9,7 +9,6 @@ from logica.juego_logica import verificar_respuesta
 """Módulo para la visualización y gestión de eventos de la pantalla del juego."""
 
 def generar_botones_opciones(ancho_p, alto_p, opciones, fuentes, colores, config_layout):
-    """Genera dinámicamente los botones de opciones de respuesta según el layout."""
     botones = []
     l_opt = config_layout["opciones"]
     ancho_btn = l_opt["ancho"]
@@ -46,7 +45,6 @@ def generar_botones_opciones(ancho_p, alto_p, opciones, fuentes, colores, config
     return botones
 
 def generar_botones_vol_juego(ancho_p, alto_p, d_vol, colores, fuente):
-    """Crea los botones de control de volumen para la pantalla de juego."""
     btn_mas = crear_boton(
         int((ancho_p * d_vol["boton_mas"]["x_relativo"]) - (d_vol["boton_mas"]["ancho"] // 2)),
         int((alto_p * d_vol["boton_mas"]["y_relativo"]) - (d_vol["boton_mas"]["alto"] // 2)),
@@ -68,7 +66,6 @@ def generar_botones_vol_juego(ancho_p, alto_p, d_vol, colores, fuente):
     return {"vol_mas": btn_mas, "vol_menos": btn_menos, "mute": btn_mute}
 
 def dibujar_interfaz_base(pantalla, recursos, colores, tdah_activo, botones_vol, pos_mouse):
-    """Limpia la pantalla y dibuja elementos comunes como fondo y botones de volumen."""
     pantalla.fill(colores["negro"])
     pantalla.blit(recursos["fondos"]["juego"], (0, 0))
 
@@ -77,7 +74,6 @@ def dibujar_interfaz_base(pantalla, recursos, colores, tdah_activo, botones_vol,
         dibujar_boton(pantalla, botones_vol[clave])
 
 def dibujar_mensaje_racha(pantalla, estado_juego, fuentes, colores, ancho_p):
-    """Muestra el mensaje motivador si está activo y descuenta su timer."""
     if estado_juego.get("mensaje_racha", "") != "" and estado_juego.get("timer_mensaje", 0) > 0:
         color_msg = colores["magenta"]
         sup_racha = fuentes["subtitulo"].render(estado_juego["mensaje_racha"], True, color_msg)
@@ -90,7 +86,6 @@ def dibujar_mensaje_racha(pantalla, estado_juego, fuentes, colores, ancho_p):
         estado_juego["timer_mensaje"] -= 1
 
 def dibujar_pantalla_final(pantalla, estado_juego, fuentes, colores, ancho_p, alto_p, pos_mouse, eventos, botones_vol, estado_vol):
-    """Dibuja el resumen de la partida y el botón de volver."""
     sup_titulo = fuentes["titulo"].render("¡FIN DE LA PARTIDA!", True, colores["amarillo"])
     rect_titulo = sup_titulo.get_rect(center=(ancho_p // 2, 150))
     pantalla.blit(sup_titulo, rect_titulo)
@@ -115,7 +110,6 @@ def dibujar_pantalla_final(pantalla, estado_juego, fuentes, colores, ancho_p, al
     return None
 
 def mostrar_pantalla_juego(pantalla, recursos, fuentes, colores, estado_juego, pos_mouse, eventos, botones_vol, estado_vol, config_layout):
-    """Dibuja todos los elementos de la interfaz de juego y gestiona clics e inputs."""
     ancho_p = pantalla.get_width()
     alto_p = pantalla.get_height()
     

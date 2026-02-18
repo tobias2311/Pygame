@@ -8,7 +8,6 @@ RUTA_ASSETS = os.path.join(RUTA_BASE, "assets")
 RUTA_SOUNDS = os.path.join(RUTA_BASE, "assets")
 
 def cargar_imagen(nombre_archivo, size=(100, 100)):
-    """Carga una imagen desde el disco y la escala a las dimensiones proporcionadas."""
     ruta = os.path.join(RUTA_ASSETS, nombre_archivo)
     
     if os.path.exists(ruta) == True:
@@ -21,7 +20,6 @@ def cargar_imagen(nombre_archivo, size=(100, 100)):
     return imagen
 
 def cargar_recursos_graficos(config_ventana):
-    """Carga todos los fondos y elementos gráficos necesarios para el juego."""
     ancho = config_ventana["ancho"]
     alto = config_ventana["alto"]
     
@@ -35,7 +33,6 @@ def cargar_recursos_graficos(config_ventana):
     return recursos
 
 def cargar_fuentes(config_fuentes):
-    """Inicializa los objetos de fuente de Pygame con los tamaños configurados."""
     fuentes = {
         "titulo": pygame.font.Font(None, config_fuentes["titulo"]),
         "subtitulo": pygame.font.Font(None, config_fuentes["subtitulo"]),
@@ -45,7 +42,6 @@ def cargar_fuentes(config_fuentes):
     return fuentes
 
 def gestionar_musica(nombre_archivo, volumen=0.5):
-    """Carga y reproduce música de fondo en bucle."""
     ruta = os.path.join(RUTA_SOUNDS, nombre_archivo)
     if os.path.exists(ruta) == True:
         pygame.mixer.music.load(ruta)
@@ -53,7 +49,6 @@ def gestionar_musica(nombre_archivo, volumen=0.5):
         pygame.mixer.music.play(-1)
 
 def actualizar_musica_pantalla(pantalla_actual, musica_actual, configuracion_musica):
-    """Determina si debe cambiar la música según la pantalla y devuelve el nuevo identificador."""
     nueva_musica = musica_actual
     
     es_menu = (pantalla_actual == "login" or pantalla_actual == "registro" or 

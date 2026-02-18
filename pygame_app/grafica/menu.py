@@ -4,7 +4,6 @@ from logica.sonido import procesar_eventos_volumen
 """Módulo encargado de gestionar el menú principal y la navegación inicial."""
 
 def generar_botones_menu(ancho_p, alto_p, conf_menu, colores, fuente):
-    """Crea y posiciona los botones del menú basándose en la configuración JSON."""
     datos_inicio = conf_menu["boton_inicio"]
     btn_inicio = crear_boton(
         x = int((ancho_p * datos_inicio["x_relativo"]) - (datos_inicio["ancho"] // 2)),
@@ -95,7 +94,6 @@ def generar_botones_menu(ancho_p, alto_p, conf_menu, colores, fuente):
     }
 
 def mostrar_menu(pantalla, recursos, fuentes, colores, botones, pos_mouse, eventos, estado_vol):
-    """Renderiza el menú principal y procesa la navegación hacia otras pantallas."""
     fondo_menu = recursos["fondos"]["menu"]
     pantalla.blit(fondo_menu, (0, 0))
     

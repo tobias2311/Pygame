@@ -5,7 +5,6 @@ import os
 """Módulo de funciones de utilidad para la lectura y escritura de archivos CSV y JSON."""
 
 def cargar_preguntas(ruta_archivo: str) -> list:
-    """Lee el archivo CSV de preguntas y las convierte en una lista de diccionarios."""
     preguntas = []
     if os.path.exists(ruta_archivo):
         with open(ruta_archivo, mode="r", encoding="utf-8") as archivo:
@@ -31,7 +30,6 @@ def cargar_preguntas(ruta_archivo: str) -> list:
     return preguntas
 
 def cargar_configuracion(ruta_archivo: str) -> dict:
-    """Carga y decodifica un archivo JSON de configuración."""
     config = {}
     if os.path.exists(ruta_archivo):
         with open(ruta_archivo, mode="r", encoding="utf-8") as archivo:
@@ -42,7 +40,6 @@ def cargar_configuracion(ruta_archivo: str) -> dict:
     return config
 
 def guardar_datos_json(ruta_archivo: str, datos: dict) -> bool:
-    """Serializa y guarda un diccionario en un archivo formato JSON."""
     try:
         with open(ruta_archivo, mode="w", encoding="utf-8") as archivo:
             json.dump(datos, archivo, indent=4, ensure_ascii=False)

@@ -3,7 +3,6 @@ import random
 """Módulo encargado de la lógica de procesamiento de la partida."""
 
 def inicializar_estado_juego(preguntas, config_juego, tematica, dificultad):
-    """Genera el estado inicial de una partida filtrando preguntas por temática y dificultad."""
     puntos_por_acierto = config_juego.get("puntos_facil", 1)
     puntos_filtro_csv = 1
     
@@ -21,18 +20,7 @@ def inicializar_estado_juego(preguntas, config_juego, tematica, dificultad):
     
     cantidad_objetivo = config_juego.get("cantidad_preguntas", 12)
     
-    if len(preguntas_filtradas) < cantidad_objetivo:
-        for p in preguntas:
-            if p["categoria"].lower() == tematica.lower():
-                existe = False
-                for pf in preguntas_filtradas:
-                    if pf["enunciado"] == p["enunciado"]:
-                        existe = True
-                        break
-                if existe == False:
-                    preguntas_filtradas.append(p)
-                    if len(preguntas_filtradas) >= cantidad_objetivo:
-                        break
+   
 
     random.shuffle(preguntas_filtradas)
     lista_juego = preguntas_filtradas[:cantidad_objetivo]
@@ -59,7 +47,6 @@ def inicializar_estado_juego(preguntas, config_juego, tematica, dificultad):
     }
 
 def verificar_respuesta(estado_juego, respuesta_usuario, respuesta_correcta):
-    """Valida la respuesta del usuario y actualiza el puntaje en el estado del juego."""
     es_correcta = False
     if respuesta_usuario.strip().lower() == respuesta_correcta.strip().lower():
         estado_juego["puntaje"] = estado_juego["puntaje"] + estado_juego["puntos_acierto"]

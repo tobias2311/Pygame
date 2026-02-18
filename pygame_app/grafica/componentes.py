@@ -3,7 +3,6 @@ import pygame
 """Módulo de creación y gestión de componentes genéricos de UI (Botones e Inputs)."""
 
 def crear_boton(x, y, ancho, alto, texto, fuente, color_base, color_hover, color_texto=(255, 255, 255), radio_borde=10):
-    """Inicializa la estructura de datos para un botón."""
     boton = {
         "rect": pygame.Rect(x, y, ancho, alto),
         "texto": texto,
@@ -18,7 +17,6 @@ def crear_boton(x, y, ancho, alto, texto, fuente, color_base, color_hover, color
     return boton
 
 def dibujar_boton(superficie, boton):
-    """Renderiza el botón en la superficie con efectos de sombra y borde."""
     sombra_rect = boton["rect"].copy()
     sombra_rect.x += 4
     sombra_rect.y += 4
@@ -32,7 +30,6 @@ def dibujar_boton(superficie, boton):
     superficie.blit(img_texto, rect_texto)
 
 def actualizar_boton(boton, posicion_mouse):
-    """Actualiza visualmente el botón según la posición del cursor."""
     if boton["rect"].collidepoint(posicion_mouse):
         boton["color_actual"] = boton["color_hover"]
         boton["hovered"] = True
@@ -41,14 +38,12 @@ def actualizar_boton(boton, posicion_mouse):
         boton["hovered"] = False
 
 def verificar_click_boton(boton, evento):
-    """Valida si se ha producido un clic izquierdo dentro del área del botón."""
     if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
         if boton["rect"].collidepoint(evento.pos):
             return True
     return False
 
 def crear_input_box(x, y, ancho, alto, fuente, color_activo, color_inactivo, texto_inicial=""):
-    """Inicializa la estructura de datos para un campo de entrada de texto."""
     input_box = {
         "rect": pygame.Rect(x, y, ancho, alto),
         "fuente": fuente,
@@ -67,7 +62,6 @@ def crear_input_box(x, y, ancho, alto, fuente, color_activo, color_inactivo, tex
     return input_box
 
 def manejar_evento_input(input_box, evento):
-    """Procesa eventos de mouse y teclado para la entrada de texto."""
     if evento.type == pygame.MOUSEBUTTONDOWN:
         if input_box["rect"].collidepoint(evento.pos):
             if input_box["activo"] == True:
@@ -94,7 +88,6 @@ def manejar_evento_input(input_box, evento):
     return None
 
 def dibujar_input_box(superficie, input_box):
-    """Renderiza la caja de entrada de texto en la superficie."""
     pygame.draw.rect(superficie, (255, 255, 255), input_box["rect"], border_radius=5)
     pygame.draw.rect(superficie, input_box["color_actual"], input_box["rect"], width=3, border_radius=5)
     
@@ -102,7 +95,6 @@ def dibujar_input_box(superficie, input_box):
     superficie.blit(img_texto, (input_box["rect"].x + 10, input_box["rect"].y + (input_box["rect"].height - img_texto.get_height()) // 2))
 
 def crear_switch(x, y, ancho, alto, estado_inicial, fuente, colores):
-    """Inicializa la estructura de datos para un interruptor (switch) deslizante."""
     radio_handle = (alto // 2) - 4
     x_off = x + radio_handle + 4
     x_on = x + ancho - radio_handle - 4
@@ -127,7 +119,6 @@ def crear_switch(x, y, ancho, alto, estado_inicial, fuente, colores):
     return switch
 
 def actualizar_switch(switch, posicion_mouse):
-    """Actualiza la posición del handle (con suavizado) y el estado de hover."""
     if switch["rect"].collidepoint(posicion_mouse):
         switch["hovered"] = True
     else:
@@ -138,7 +129,6 @@ def actualizar_switch(switch, posicion_mouse):
         switch["x_actual"] += distancia * 0.2
 
 def dibujar_switch(superficie, switch):
-    """Dibuja el switch con estilo premium: fondo, track y handle deslizante."""
     if switch["activo"] == True:
         color_fondo = switch["colores"]["on"]
         txt = "ON"
@@ -171,7 +161,6 @@ def dibujar_switch(superficie, switch):
     pygame.draw.circle(superficie, (200, 200, 200), (int(switch["x_actual"]), switch["y_centro"]), switch["radio_handle"], width=1)
 
 def verificar_click_switch(switch, evento):
-    """Gestiona el clic para cambiar el estado del switch."""
     if evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
         if switch["rect"].collidepoint(evento.pos):
             if switch["activo"] == True:

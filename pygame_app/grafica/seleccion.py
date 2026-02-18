@@ -4,7 +4,6 @@ from grafica.componentes import crear_boton, dibujar_boton, actualizar_boton, ve
 """Módulo para la visualización y gestión de la pantalla de selección de temática y dificultad."""
 
 def generar_botones_seleccion(ancho_p, alto_p, conf_seleccion, fuentes, colores):
-    """Genera dinámicamente los botones para las temáticas y dificultades."""
     layout = conf_seleccion["layout"]
     ancho_btn = layout["ancho_btn"]
     alto_btn = layout["alto_btn"]
@@ -74,7 +73,6 @@ def generar_botones_seleccion(ancho_p, alto_p, conf_seleccion, fuentes, colores)
     }
 
 def mostrar_seleccion(pantalla, recursos, fuentes, colores, botones, pos_mouse, eventos, seleccion_actual):
-    """Dibuja y gestiona la pantalla de selección."""
     layout = botones["config"]["layout"]
     
     fondo = recursos["fondos"]["menu"]

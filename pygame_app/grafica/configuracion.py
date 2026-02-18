@@ -9,7 +9,6 @@ from logica.cargar_archivos import guardar_datos_json
 """Módulo para la visualización y gestión de la pantalla de configuración."""
 
 def generar_botones_config(ancho_p, alto_p, conf_ui_config, colores, fuente, config_juego):
-    """Crea los botones y switch para la pantalla de configuración usando los datos del JSON."""
     d_tdah = conf_ui_config["boton_tdah"]
     estado_tdah = config_juego.get("estado_tdah", False)
     
@@ -52,7 +51,6 @@ def generar_botones_config(ancho_p, alto_p, conf_ui_config, colores, fuente, con
     }
 
 def mostrar_configuracion(pantalla, recursos, fuentes, colores, botones, pos_mouse, eventos, config_completa, layout_config):
-    """Dibuja y gestiona la pantalla de configuración."""
     ancho_p = pantalla.get_width()
     
     pantalla.blit(recursos["fondos"]["menu"], (0, 0))
@@ -68,6 +66,12 @@ def mostrar_configuracion(pantalla, recursos, fuentes, colores, botones, pos_mou
         if clave == "tdah":
             actualizar_switch(botones[clave], pos_mouse)
             dibujar_switch(pantalla, botones[clave])
+            
+            # Etiqueta sobre el switch
+            sup_label = fuentes["subtitulo"].render("MODO TDAH", True, colores["blanco"])
+            rect_switch = botones[clave]["rect"]
+            pos_label = sup_label.get_rect(center=(rect_switch.centerx, rect_switch.top - 40))
+            pantalla.blit(sup_label, pos_label)
         else:
             actualizar_boton(botones[clave], pos_mouse)
             dibujar_boton(pantalla, botones[clave])

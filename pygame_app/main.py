@@ -19,7 +19,6 @@ from grafica.ranking import generar_botones_ranking, mostrar_ranking
 from grafica.configuracion import generar_botones_config, mostrar_configuracion
 
 def inicializar_ventana(config_ventana):
-    """Inicializa la ventana de pygame con la configuración cargada."""
     ancho = config_ventana["ancho"]
     alto = config_ventana["alto"]
     titulo = config_ventana["titulo"]
@@ -29,7 +28,6 @@ def inicializar_ventana(config_ventana):
     return pantalla
 
 def main():
-    """Función principal que contiene el bucle de juego."""
     pygame.init()
     pygame.mixer.init()
 

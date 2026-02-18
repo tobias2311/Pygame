@@ -6,7 +6,6 @@ from logica.usuarios import autenticar_usuario, registrar_usuario
 """Módulo para la gestión del registro y login de usuarios."""
 
 def inicializar_ui_usuarios(ancho_p, alto_p, fuentes, colores):
-    """Inicializa los input boxes y botones para login/registro."""
     x_centro = ancho_p // 2
     
     input_user_login = crear_input_box(x_centro - 150, 300, 300, 50, fuentes["cuerpo"], colores["celeste"], colores["gris"])
@@ -37,7 +36,6 @@ def inicializar_ui_usuarios(ancho_p, alto_p, fuentes, colores):
     }
 
 def mostrar_pantalla_login(pantalla, recursos, fuentes, colores, ui, pos_mouse, eventos):
-    """Dibuja y gestiona la pantalla de login."""
     ancho_p = pantalla.get_width()
     
     pantalla_destino = None
@@ -82,7 +80,6 @@ def mostrar_pantalla_login(pantalla, recursos, fuentes, colores, ui, pos_mouse, 
     return pantalla_destino, usuario_identificado
 
 def mostrar_pantalla_registro(pantalla, recursos, fuentes, colores, ui, pos_mouse, eventos):
-    """Dibuja y gestiona la pantalla de registro."""
     ancho_p = pantalla.get_width()
     
     pantalla_destino = None
