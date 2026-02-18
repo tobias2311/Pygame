@@ -66,12 +66,6 @@ def mostrar_configuracion(pantalla, recursos, fuentes, colores, botones, pos_mou
         if clave == "tdah":
             actualizar_switch(botones[clave], pos_mouse)
             dibujar_switch(pantalla, botones[clave])
-            
-            # Etiqueta sobre el switch
-            sup_label = fuentes["subtitulo"].render("MODO TDAH", True, colores["blanco"])
-            rect_switch = botones[clave]["rect"]
-            pos_label = sup_label.get_rect(center=(rect_switch.centerx, rect_switch.top - 40))
-            pantalla.blit(sup_label, pos_label)
         else:
             actualizar_boton(botones[clave], pos_mouse)
             dibujar_boton(pantalla, botones[clave])

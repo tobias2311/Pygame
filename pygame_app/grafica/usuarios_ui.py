@@ -1,6 +1,8 @@
 import pygame
-from grafica.componentes import crear_boton, dibujar_boton, actualizar_boton, verificar_click_boton
-from grafica.componentes import crear_input_box, manejar_evento_input, dibujar_input_box
+from grafica.componentes import (
+    crear_boton, dibujar_boton, actualizar_boton, verificar_click_boton,
+    crear_input_box, manejar_evento_input, dibujar_input_box
+)
 from logica.usuarios import autenticar_usuario, registrar_usuario
 
 """Módulo para la gestión del registro y login de usuarios."""
