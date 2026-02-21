@@ -9,7 +9,7 @@ Archivo principal del juego.
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from logica.juego_logica import inicializar_contexto_juego, gestionar_musica_segun_estado, procesar_logica_por_estado
+from logica.navegacion import inicializar_contexto_juego, gestionar_musica_segun_estado, procesar_logica_por_estado
 
 def main():
     pygame.init()
